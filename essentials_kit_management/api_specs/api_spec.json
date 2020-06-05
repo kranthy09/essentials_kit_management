@@ -1,0 +1,421 @@
+{
+    "swagger": "2.0",
+    "host": "localhost:8080",
+    "basePath": "/api/essentials_kit_management/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Essentails kit api ",
+        "description": "user api"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "super user permission"
+            },
+            "type": "oauth2"
+        }
+    },
+    "definitions": {
+        "userInfo": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password"
+                }
+            },
+            "required": [
+                "username",
+                "password"
+            ]
+        },
+        "Form": {
+            "type": "object",
+            "properties": {
+                "form_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "form_name": {
+                    "type": "string"
+                },
+                "closing_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "expected_delivery_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "total_items": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "total_cost_estimate": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pending_items": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "cost_incurred": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "required": [
+                "form_id",
+                "form_name",
+                "closing_date",
+                "expected_delivery_date",
+                "total_items",
+                "total_cost_estimate",
+                "pending_items",
+                "cost_incurred"
+            ]
+        },
+        "FormWithState": {
+            "allOf": [{
+                    "$ref": "#/definitions/Form"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "form_state": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "closed",
+                                "live"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "form_state"
+                    ]
+
+                }
+            ]
+        },
+        "listOfForms": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/FormWithState"
+            }
+        },
+        "ItemBrand": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer"
+                },
+                "item_brand_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "price_per_item": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "required": [
+                "item_brand_name",
+                "quantity",
+                "price_per_item"
+            ]
+        },
+        "FormSectionItem": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "type": "integer"
+                },
+                "item_name": {
+                    "type": "string"
+                },
+                "item_description": {
+                    "type": "string"
+                },
+                "list_of_item_brands": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ItemBrand"
+                    }
+                }
+            },
+            "required": [
+                "item_name",
+                "item_description"
+            ]
+        },
+        "FormSection": {
+            "type": "object",
+            "properties": {
+                "section_id": {
+                    "type": "integer"
+                },
+                "section_title": {
+                    "type": "string"
+                },
+                "section_description": {
+                    "type": "string"
+                },
+                "section_list_of_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FormSectionItem"
+                    }
+                }
+            },
+            "required": [
+                "section_title",
+                "section_description"
+            ]
+        },
+        "SingleForm": {
+            "type": "object",
+            "properties": {
+                "form_id": {
+                    "type": "integer"
+                },
+                "form_title": {
+                    "type": "string"
+                },
+                "form_section_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FormSection"
+                    }
+                },
+                "instructions": {
+                    "type": "string"
+                },
+                "total_items": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "total_cost": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "closing_date": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "instructions",
+                "total_items",
+                "total_cost",
+                "closing_date"
+            ]
+        }
+    },
+    "parameters": {
+        "UserLoginParameters": {
+            "name": "login_user",
+            "in": "body",
+            "description": "get username and password",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/userInfo"
+            }
+        },
+        "GetsingleFormParameters": {
+            "name": "get_form",
+            "in": "path",
+            "description": "get form details for user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+        },
+        "PostSingleFormParameters": {
+            "name": "form_id",
+            "in": "body",
+            "description": "post form details",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/ItemBrand"
+            }
+        }
+    },
+    "responses": {
+        "UserloginResponse": {
+            "description": "user login",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "user_id",
+                    "access_token",
+                    "refresh_token",
+                    "expires_in"
+                ]
+            }
+        },
+        "GetListofFormsResponse": {
+            "description": "This is response is ok",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "forms_list": {
+                        "$ref": "#/definitions/listOfForms"
+                    },
+                    "total_forms_count": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "forms_list",
+                    "total_forms_count"
+                ]
+            }
+        },
+        "GetSingleFormResponse": {
+            "description": "Get a form with response ok",
+            "schema": {
+                "$ref": "#/definitions/SingleForm"
+            }
+        }
+    },
+    "paths": {
+        "/signin/": {
+            "post": {
+                "operationId": "login_user",
+                "summary": "User Login",
+                "description": "Takes username and password and validates the user and servers accesstoken. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/UserLoginParameters"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/UserloginResponse"
+                    }
+                }
+            }
+        },
+        "/listofforms/": {
+            "get": {
+                "operationId": "get_list_of_forms",
+                "summary": "home page",
+                "description": "Home page which shows list of forms and their state",
+                "security": [{
+                    "oauth": [
+                        "read"
+                    ]
+                }],
+                "parameters": [{
+                        "name": "offset",
+                        "in": "query",
+                        "required": true,
+                        "description": "Some description for offset",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": true,
+                        "description": "Some description for limit",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/GetListofFormsResponse"
+                    }
+                }
+            }
+        },
+        "/get/{form_id}/": {
+            "get": {
+                "operationId": "get_form",
+                "summary": "get form details for a user",
+                "description": "Form with items and its information",
+                "security": [{
+                    "oauth": [
+                        "read"
+                    ]
+                }],
+                "parameters": [{
+                    "name": "form_id",
+                    "in": "path",
+                    "required": true,
+                    "description": "get form id and response with form",
+                    "type": "integer",
+                    "format": "int64"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/GetSingleFormResponse"
+                    }
+                }
+            }
+        },
+        "/post/form/": {
+            "post": {
+                "operationId": "post_form",
+                "summary": "post form details",
+                "description": "get form id and post the details",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "write",
+                        "update"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/PostSingleFormParameters"
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Success Response"
+                    }
+                }
+
+            }
+        }
+    }
+}
