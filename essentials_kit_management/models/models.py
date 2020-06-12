@@ -10,9 +10,9 @@ class User(AbstractUser):
 
 class Form(models.Model):
     Form_State_Type_choice = (
-            (FormStateType.Done.name, FormStateType.Done.value),
-            (FormStateType.Live.name, FormStateType.Live.value),
-            (FormStateType.Closed.name, FormStateType.Closed.value)
+            (FormStateType.DONE.name, FormStateType.DONE.value),
+            (FormStateType.LIVE.name, FormStateType.LIVE.value),
+            (FormStateType.CLOSED.name, FormStateType.CLOSED.value)
         )
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
@@ -42,13 +42,26 @@ class OrderedItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    is_closed = models.BooleanField(models.Model)
+    is_closed = models.BooleanField(default=False)
     delivered_items = models.IntegerField(default=0)
     quantity = models.IntegerField()
 
 class SectionItem(models.Model):
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     estimated_cost = models.IntegerField(default=0)
     quantity_selected = models.IntegerField(default=0)
     brand_selected = models.CharField(max_length=100, default='brand')
+
+class FormUser(models.Model):
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_items = models.IntegerField(default=0)
+    pending_items = models.IntegerField(default=0)
+    cost_incurred = models.IntegerField(default=0)
+    total_cost_estimate = models.IntegerField(default=0)
+
+
+
+# title = "Snacks Form", description = "snacks form", state = 'Active', closed_date = datetime.datetime(29,07,2020), expected_delivery_date = datetime.datetime(25,07,2020)

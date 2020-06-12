@@ -15,6 +15,6 @@ class CodeLanguage(BaseEnumClass, enum.Enum):
 
 
 class FormStateType(enum.Enum):
-    Live = "Live"
-    Done = "Done"
-    Closed = "Closed"
+    LIVE = "Live"
+    DONE = "Done"
+    CLOSED = "Closed"

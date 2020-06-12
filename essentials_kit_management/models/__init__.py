@@ -1,8 +1,10 @@
-from essentials_kit_management.models.models import User
-
+from .models import User
+from .models import Brand, Item
 
 __all__ = [
-    "User"
+    "User",
+    "Brand",
+    "Item"
 ]
 
 # class DummyModel(AbstractDateTimeModel):

@@ -39,7 +39,7 @@ class StorageInterface(ABC):
     def get_form_dto(self,
                      user_id: int,
                      form_id: int
-                    )-> GetFormDto:
+                    )-> GetFormDto: 
         pass
 
     @abstractmethod
