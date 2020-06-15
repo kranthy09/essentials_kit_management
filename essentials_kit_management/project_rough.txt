@@ -1,0 +1,100 @@
+# get_form_storage_implementation
+
+    def get_form_dto(self,
+                     user_id: int,
+                     form_id: int
+                    )-> GetFormDto: 
+        form = Form.objects.get(id=form_id)
+        form_dto = GetFormDto(
+                      form_id=form_id,
+                      form_name=form.title,
+                      form_state=form.state,
+                      form_description=form.description,
+                      closing_date=form.closing_date
+                   )
+        return form_dto
+
+    def get_form_section_dtos(
+                    self,
+                    form_id: int
+            )-> List[FormSectionDto]:
+        form = Form.objects.filter(id=form_id) \
+                .prefetch_related(
+                    Prefetch('section_set', to_attr='sections')
+                )
+        for form_object in form:
+            sections = form_object.sections
+        form_section_dtos = []
+        for section in sections:
+            form_section_dtos.append(
+                FormSectionDto(
+                    form_id=form_id,
+                    section_id=section.id,
+                    section_title=section.title,
+                    section_description=section.description
+                )
+            )
+        return form_section_dtos
+
+    def get_section_item_dtos(
+                self,
+                section_ids: List[int]
+            )-> List[SectionItemDto]:
+        sections \
+            = Section.objects\
+                .filter(id__in=section_ids).prefetch_related(
+                        Prefetch('item_set', to_attr='items')
+                )
+        section_item_dtos = []
+        for section in sections:
+            items = section.items
+            for item in items:
+                section_item_dtos.append(
+                    SectionItemDto(
+                        section_id=section.id,
+                        item_id=item.id,
+                        item_name=item.name,
+                        item_description=item.item_description
+                    )
+                )
+        return section_item_dtos
+        
+
+    def get_item_brand_dtos(
+                self,
+                item_ids: List[int]
+            )-> List[ItemBrandDto]:
+        items \
+            = Item.objects \
+                .filter(id__in=item_ids) \
+                    .prefetch_related(Prefetch('brand_set', to_attr='brands'))
+        item_brand_dtos = []
+        for item in items:
+            brands = item.brands
+            for brand in brands:
+                item_brand_dtos.append(
+                    ItemBrandDto(
+                        item_id=item.id,
+                        brand_id=brand.id,
+                        brand_name=brand.name,
+                        min_quantity=brand.min_quantity,
+                        max_quantity=brand.max_quantity,
+                        price=brand.price_per_item
+                    )
+                )
+        return item_brand_dtos
+
+    def get_order(self, user_id: int,
+                  item_id: int, brand_id: int
+                )-> bool:
+        pass
+
+    def update_order(self, user_id: int,
+                     item_brand_dto: ItemBrandDto
+                    ):
+        pass
+
+    def create_order(self, user_id: int,
+                     item_brand_dto: ItemBrandDto
+                    ):
+        pass

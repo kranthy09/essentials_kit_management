@@ -2,10 +2,18 @@
 
 REQUEST_BODY_JSON = """
 {
-    "brand_id": 1,
-    "item_brand_name": "string",
-    "quantity": 1,
-    "price_per_item": 1
+    "order_list": [
+        {
+            "section_id": 1,
+            "items": [
+                {
+                    "brand_id": 1,
+                    "item_id": 1,
+                    "selected_quantity": 1
+                }
+            ]
+        }
+    ]
 }
 """
 

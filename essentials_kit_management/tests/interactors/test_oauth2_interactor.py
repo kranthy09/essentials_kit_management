@@ -5,8 +5,9 @@ from common.oauth_user_auth_tokens_service\
     import OAuthUserAuthTokensService
 from essentials_kit_management.interactors.presenters.presenter_interface\
     import PresenterInterface
-from essentials_kit_management.interactors.storages.storage_interface\
-    import StorageInterface
+from essentials_kit_management.interactors.storages \
+    .storage_list_of_forms_interface\
+        import StorageListOfFormsInterface
 from essentials_kit_management.interactors.oauth2_interactor\
     import OAuth2Interactor
 
@@ -29,7 +30,7 @@ def test_oauth_interactor(create_user_auth_tokens):
             refresh_token="mock_refresh_token",
             expires_in=1000000000
         )
-    storage = create_autospec(StorageInterface)
+    storage = create_autospec(StorageListOfFormsInterface)
     presenter = create_autospec(PresenterInterface)
     oauth2_storage = create_autospec(OAuth2SQLStorage)
 

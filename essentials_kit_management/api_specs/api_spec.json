@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
-    "host": "localhost:8080",
-    "basePath": "/api/essentials_kit_management/",
+    "host": "localhost:8000",
+    "basePath": "/api/",
     "info": {
         "version": "1.0.0",
         "title": "Essentails kit api ",
@@ -195,6 +195,44 @@
                 "section_description"
             ]
         },
+        "OrderBrand": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer"
+                },
+                "item_id": {
+                    "type": "integer"
+                },
+                "selected_quantity": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "brand_id",
+                "item_id",
+                "selected_quantity"
+            ]
+        },
+        "OrderItem": {
+            "type": "object",
+            "properties": {
+                "section_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OrderBrand"
+                    }
+                }
+            },
+            "required": [
+                "section_id",
+                "items"
+            ]
+        },
         "SingleForm": {
             "type": "object",
             "properties": {
@@ -257,7 +295,15 @@
             "description": "post form details",
             "required": true,
             "schema": {
-                "$ref": "#/definitions/ItemBrand"
+                "type": "object",
+                "properties": {
+                    "order_list": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/OrderItem"
+                        }
+                    }
+                }
             }
         }
     },

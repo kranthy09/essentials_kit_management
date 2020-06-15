@@ -3,8 +3,9 @@ from essentials_kit_management.exceptions.exceptions\
     import InvalidUsername, InvalidPassword
 from essentials_kit_management.interactors.presenters.presenter_interface\
     import PresenterInterface
-from essentials_kit_management.interactors.storages.storage_interface\
-    import StorageInterface
+from essentials_kit_management.interactors.storages \
+    .storage_list_of_forms_interface \
+        import StorageListOfFormsInterface
 from common.oauth_user_auth_tokens_service\
     import OAuthUserAuthTokensService
 
@@ -12,7 +13,7 @@ from common.oauth_user_auth_tokens_service\
 class OAuth2Interactor:
 
     def __init__(self,
-                 storage: StorageInterface,
+                 storage: StorageListOfFormsInterface,
                  oauth2_storage: OAuth2SQLStorage,
                  presenter: PresenterInterface
                 ):

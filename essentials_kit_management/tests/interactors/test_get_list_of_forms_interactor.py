@@ -2,13 +2,13 @@ from unittest.mock import create_autospec
 from essentials_kit_management.constants.enums\
     import FormStateType
 from essentials_kit_management.interactors.storages \
-    .storage_interface import (FormDto,
-                               UserItemDto,
-                               UserBrandDto
+    .dtos import (FormDto,
+                  UserItemDto,
+                  UserBrandDto
                 )
 from essentials_kit_management.interactors\
-    .storages.storage_interface\
-        import StorageInterface
+    .storages.storage_list_of_forms_interface\
+        import StorageListOfFormsInterface
 from essentials_kit_management.interactors\
     .presenters.presenter_interface\
         import PresenterInterface
@@ -27,14 +27,14 @@ def test_get_list_of_forms_interactor():
         FormDto(
             form_id=1,
             form_name="Snacks Form",
-            form_state=FormStateType.Live.value,
+            form_state=FormStateType.LIVE.value,
             delivery_date="2020-06-09",
             closing_date="2020-06-12"
         ),
         FormDto(
             form_id=2,
             form_name="Fruits Form",
-            form_state=FormStateType.Done.value,
+            form_state=FormStateType.DONE.value,
             delivery_date="2020-06-09",
             closing_date="2020-06-12"
         )
@@ -75,7 +75,7 @@ def test_get_list_of_forms_interactor():
         {
             'form_id': 1,
             'form_name': 'Snacks Form',
-            'form_state': FormStateType.Live.value,
+            'form_state': FormStateType.LIVE.value,
             'delivery_date': '2020-06-09',
             'closing_date': '2020-06-12',
             'total_items': 0,
@@ -86,7 +86,7 @@ def test_get_list_of_forms_interactor():
         {
             'form_id': 2,
             'form_name': 'Fruits Form',
-            'form_state': FormStateType.Closed.value,
+            'form_state': FormStateType.CLOSED.value,
             'delivery_date': '2020-06-09',
             'closing_date': '2020-06-12',
             'total_items': 10,
@@ -96,7 +96,7 @@ def test_get_list_of_forms_interactor():
         }
     ]
 
-    storage = create_autospec(StorageInterface)
+    storage = create_autospec(StorageListOfFormsInterface)
     presenter = create_autospec(PresenterInterface)
 
     interactor = GetListOfFormsInteractor(

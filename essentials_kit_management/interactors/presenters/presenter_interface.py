@@ -34,14 +34,3 @@ class PresenterInterface(ABC):
                     form_metrics_dtos: List[FormMetricsDto]
             )-> List[Dict[str, str]]:
         pass
-
-    @abstractmethod
-    def get_response_for_form(
-                    self,
-                    form_dto_to_presenter: FormDtoToPresenter
-                   )-> List[Dict[str,str]]:
-        pass
-
-    @abstractmethod
-    def get_response_for_post_form(self)-> str:
-        pass

@@ -6,7 +6,11 @@ from essentials_kit_management.interactors.presenters\
 from common.dtos import UserAuthTokensDTO
 from typing import List, Dict
 from essentials_kit_management.interactors.storages.dtos\
-    import FormDto, BrandDto, FormDetailsDto
+    import (FormDto,
+            FormMetricsDto,
+            FormDetailsDto
+            
+    )
 
 
 class PresenterImplementation(PresenterInterface):
@@ -29,25 +33,67 @@ class PresenterImplementation(PresenterInterface):
         return response
 
     def get_response_for_list_of_forms(
-                    self,
-                    limit: int,
-                    offset: int,
-                    list_of_forms_details_dtos: List[FormDto]
-        ):
+                            self,
+                            form_dtos: List[FormDto],
+                            form_metrics_dtos: List[FormMetricsDto]
+                    )-> List[Dict[str, str]]:
+        form_details = []
+        for form_dto in form_dtos:
+            total_items = 0
+            total_cost_estimate = 0
+            cost_incurred = 0
+            pending_items = 0
+            for form_metrics_dto in form_metrics_dtos:
+                if form_dto.form_id == form_metrics_dto.form_id:
+                    total_items += form_metrics_dto.items
+                    total_cost_estimate += form_metrics_dto.cost
+                    cost_incurred += form_metrics_dto.order_cost
+                    pending_items += form_metrics_dto.pendings
+            form_details.append(
+                FormDetailsDto(
+                    form_id=form_dto.form_id,
+                    form_name=form_dto.form_name,
+                    total_items=total_items,
+                    pending_items=pending_items,
+                    cost_incurred=cost_incurred,
+                    closing_date=form_dto.closing_date,
+                    delivery_date=form_dto.delivery_date,
+                    total_cost_estimate=total_cost_estimate,
+                    form_state=form_dto.form_state
+                )
+            )
+        response = self._convert_dto_to_dict(form_details)
+        return response
 
+    def _convert_dto_to_dict(
+                        self,
+                        form_details: List[FormDetailsDto]
+                    ):
         response = []
-        for form_details_dto in list_of_forms_details_dtos:
+        for form_detail in form_details:
             response.append(
                 {
-                    "form_id": form_details_dto.form_id,
-                    "form_name": form_details_dto.form_name,
-                    "form_state": form_details_dto.form_state,
-                    "closing_date": form_details_dto.closing_date,
-                    "expected_delivery_date": form_details_dto.expected_delivery_date,
-                    "total_items": form_details_dto.total_items,
-                    "total_cost_estimate": form_details_dto.total_cost_estimate,
-                    "pending_items": form_details_dto.pending_items,
-                    "cost_incurred": form_details_dto.cost_incurred
+                    "form_id":form_detail.form_id,
+                    "form_name": form_detail.form_name,
+                    "form_state": form_detail.form_state,
+                    "closing_date": form_detail.closing_date,
+                    "next_delivery_date": form_detail.delivery_date,
+                    "total_items": form_detail.total_items,
+                    "total_cost_estimate": form_detail.total_cost_estimate,
+                    "pending_items": form_detail.pending_items,
+                    "cost_incurred": form_detail.cost_incurred
                 }
             )
         return response
+
+
+
+
+
+"""
+    form_id: int
+    cost_estimate: int
+    pendings: int
+    cost_for_purchase: int
+    items_count: int
+"""

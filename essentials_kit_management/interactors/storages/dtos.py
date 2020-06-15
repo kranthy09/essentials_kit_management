@@ -30,14 +30,29 @@ class UserBrandDto:
     is_closed: int
 
 @dataclass
+class ItemMetrics:
+    item_id: int
+    item_count: int
+    item_cost: int
+    item_pending: int
+    item_order_cost: int
+    
+
+@dataclass
 class FormMetricsDto:
     form_id: int
-    item_id: int
-    user_id: int
-    total_items: int
-    cost_incurred: int
-    pending_items: int
-    total_cost_estimate: int
+    items: int
+    cost: int
+    pendings: int
+    order_cost: int
+
+@dataclass
+class FormStatsDto:
+    form_id: int
+    cost_estimate: int
+    pendings: int
+    cost_for_purchase: int
+    items_count: int
 
 @dataclass
 class FormDetailsDto:

@@ -1,7 +1,7 @@
 import pytest
 from essentials_kit_management.storages \
-    .storage_implementation \
-        import StorageImplementation
+    .storage_get_list_of_forms_implementation \
+        import StorageListOfFormsImplementation
 from essentials_kit_management.interactors \
     .storages.dtos import (FormDto,
                            UserItemDto,
@@ -31,12 +31,11 @@ def test_get_list_of_forms_dtos(user, form, section, item, brand, ordereditem):
         )
     ]
 
-    storage = StorageImplementation()
+    storage = StorageListOfFormsImplementation()
     
 
     # Act
     result_form_dtos = storage.get_list_of_form_dtos(
-                user_id=user_id,
                 offset=offset,
                 limit=limit
             )
@@ -72,7 +71,7 @@ def test_get_user_item_dtos(user, form, section, item, brand, ordereditem):
         )
     ]
 
-    storage = StorageImplementation()
+    storage = StorageListOfFormsImplementation()
 
     # Act
     result_item_dtos = storage.get_user_item_dtos(
@@ -127,14 +126,13 @@ def test_get_user_brand_dtos(user, form, section, item, brand, ordereditem):
         )
     ]
 
-    storage = StorageImplementation()
+    storage = StorageListOfFormsImplementation()
 
     # Act
     result_brand_dtos = storage.get_user_brand_dtos(
                             user_id=user_id,
                             item_ids=item_ids
                         )
-    print(result_brand_dtos)
 
     # Assert
     assert result_brand_dtos == user_brand_dtos

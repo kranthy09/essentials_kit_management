@@ -339,6 +339,10 @@ MOCK_X_IB_REQUEST_ID = True
 
 STAGE = os.environ.get("STAGE", "local")
 
+# AbstractUser
+
+AUTH_USER_MODEL = "essentials_kit_management.user"
+
 #OAUTH2SQLTOKENSERVICE
 
 DEFAULT_OAUTH_APPLICATION_NAME = "essentials_kit_management"
