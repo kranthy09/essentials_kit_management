@@ -121,7 +121,7 @@ def test_order_item_interactor_with_invalid_item_ids():
         .assert_called_once_with(item_ids=item_ids)
     err = presenter.raise_exception_for_invalid_item_ids \
         .call_args.kwargs['item_ids']
-    assert err == invalid_item_ids
+    assert err.item_ids == invalid_item_ids
 
 def test_order_item_interactor_validate_items_in_meal():
 
@@ -212,7 +212,7 @@ def test_order_item_interactor_item_invalid_quantity():
             )
     items_with_invalid_quantity = [1,6]
     meal_items = [1,4,6]
-    item_ids = [item.item_id for item in items]
+    item_ids = [item.item_id for item in request_items]
     all_items_in_storage = [1,4,6]
 
     storage = create_autospec(StorageInterface)
@@ -236,7 +236,7 @@ def test_order_item_interactor_item_invalid_quantity():
     storage.validate_item_ids \
         .assert_called_once_with(item_ids=item_ids)
     storage.validate_items_in_meal_id \
-        .assert_called_once_with(items=items, meal_id=meal_id)
+        .assert_called_once_with(items=request_items, meal_id=meal_id)
     err = presenter.raise_exception_for_item_quanity_limit_reached \
         .call_args.kwargs['items']
     assert err.items == items_with_invalid_quantity
@@ -363,52 +363,52 @@ def test_order_item_interactor_with_order_in_right_time():
 
 # def test_order_item_interactor_with_invalid_duplicate_item_ids():
 
-    # Arrange
-    meal_id = 5
-    date = "2020-9-5"
-    order_time = "10:34:11"
-    order_deadline_time = "7:00:00"
-    items = [
-        ItemQuantity(
-            item_id=1,
-            quantity=4
-        ),
-        ItemQuantity(
-            item_id=2,
-            quantity=5
-        ),
-        ItemQuantity(
-            item_id=1,
-            quantity=2
-        )
-    ]
-    order = OrderDto(
-                meal_id=meal_id,
-                date=date,
-                items=items,
-                order_time=order_time,
-                order_deadline_time=order_deadline_time
-            )
-    item_ids = [1]
-    err  = InvalidDuplicateItem(item_ids)
-    storage = create_autospec(StorageInterface)
-    presenter = create_autospec(PresenterInterface)
+#     # Arrange
+#     meal_id = 5
+#     date = "2020-9-5"
+#     order_time = "10:34:11"
+#     order_deadline_time = "7:00:00"
+#     items = [
+#         ItemQuantity(
+#             item_id=1,
+#             quantity=4
+#         ),
+#         ItemQuantity(
+#             item_id=2,
+#             quantity=5
+#         ),
+#         ItemQuantity(
+#             item_id=1,
+#             quantity=2
+#         )
+#     ]
+#     order = OrderDto(
+#                 meal_id=meal_id,
+#                 date=date,
+#                 items=items,
+#                 order_time=order_time,
+#                 order_deadline_time=order_deadline_time
+#             )
+#     item_ids = [1]
+#     err  = InvalidDuplicateItem(item_ids)
+#     storage = create_autospec(StorageInterface)
+#     presenter = create_autospec(PresenterInterface)
 
-    interactor = OrderBreakFastInteractor(
-                        storage=storage
-                 )
+#     interactor = OrderBreakFastInteractor(
+#                         storage=storage
+#                  )
 
-    storage.vaildate_duplicate_item_ids \
-        .side_effect = err
-    presenter.raise_exception_for_invalid_duplicate_items_ids \
-        .side_effect = BadRequest
+#     storage.vaildate_duplicate_item_ids \
+#         .side_effect = err
+#     presenter.raise_exception_for_invalid_duplicate_items_ids \
+#         .side_effect = BadRequest
 
-    with pytest.raises(BadRequest):
-        interactor \
-            .order_breakfast_wrapper(order=order,
-                                     presenter=presenter)
+#     with pytest.raises(BadRequest):
+#         interactor \
+#             .order_breakfast_wrapper(order=order,
+#                                      presenter=presenter)
 
-    storage.vaildate_duplicate_item_ids \
-        .assert_called_once_with(items=items)
-    presenter.raise_exception_for_invalid_duplicate_items_ids \
-        .assert_called_once()
+#     storage.vaildate_duplicate_item_ids \
+#         .assert_called_once_with(items=items)
+#     presenter.raise_exception_for_invalid_duplicate_items_ids \
+#         .assert_called_once()
