@@ -72,6 +72,8 @@ class OrderBreakFastInteractor:
 
         # meal_id validation
         self.storage.validate_meal_id(order.meal_id)
+        # validate item ids
+        self._check_item_ids_are_valid(items=order.items)
         # items in meal validation
         self._check_items_in_meal(meal_id = order.meal_id,
                                   items=order.items)
@@ -81,14 +83,20 @@ class OrderBreakFastInteractor:
         self._check_order_date(meal_id=order.meal_id,
                                order_date=order.date,
                                order_time=order.order_time)
-        # validate item ids
-        self._check_item_ids_are_valid(items=order.items)
         # validate duplicate item ids
         self.storage.vaildate_duplicate_item_ids(items=order.items)
 
     def _check_item_ids_are_valid(self, items: List[ItemQuantity]):
         item_ids = [item.item_id for item in items]
-        self.storage.validate_item_ids(item_ids=item_ids)
+        all_items_in_storage \
+            = self.storage.validate_item_ids(item_ids=item_ids)
+        invalid_item_ids = []
+        for item_id in item_ids:
+            is_item_id_not_in_storage = not(item_id in all_items_in_storage)
+            if is_item_id_not_in_storage:
+                invalid_item_ids.append(item_id)
+        if invalid_item_ids:
+            raise InvalidItemId(item_ids=invalid_item_ids)
         
 
     def _check_items_in_meal(self,
