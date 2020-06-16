@@ -18,8 +18,9 @@ class ItemNotFound(Exception):
 
 class InvalidItemQuantity(Exception):
 
-    def __init__(self, items: List[int]):
-        self.items = items
+    def __init__(self, items_with_quantity_limit_exceeded: List[int]):
+        self.items_with_quantity_limit_exceeded \
+            = items_with_quantity_limit_exceeded
 
 class InvalidDate(Exception):
     pass
@@ -31,3 +32,88 @@ class InvalidDuplicateItem(Exception):
 
     def __init__(self, item_ids):
         self.item_ids = item_ids
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

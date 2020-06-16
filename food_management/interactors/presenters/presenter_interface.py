@@ -22,15 +22,21 @@ class PresenterInterface(ABC):
         pass
 
     @abstractmethod
-    def raise_exception_for_item_not_found(self):
+    def raise_exception_for_item_not_found(
+                                    self,
+                                    items_not_in_meal: List[int]
+                                ):
         pass
 
     @abstractmethod
-    def raise_exception_for_item_quanity_limit_reached(self):
+    def raise_exception_for_item_quanity_limit_reached(
+                        self,
+                        items: List[int]
+                    ):
         pass
 
     @abstractmethod
-    def raise_exception_for_order_invalid_date(self):
+    def raise_exception_for_invalid_order_date(self):
         pass
 
     @abstractmethod

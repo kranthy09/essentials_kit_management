@@ -24,18 +24,16 @@ class StorageInterface:
         pass
 
     @abstractmethod
-    def validate_order_date(self, date: datetime):
+    def validate_order_date(self, meal_id: int):
         pass
 
     @abstractmethod
-    def validate_ordered_in_right_time(self,
-                                       order_time: datetime,
-                                       breakfast_time: datetime):
+    def validate_ordered_in_right_time(self, meal_id: int):
         pass
 
     @abstractmethod
     def validate_item_ids(self,
-                          items: List[ItemQuantity]):
+                          item_ids: List[int]):
         pass
 
     @abstractmethod

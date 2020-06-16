@@ -1,8 +1,9 @@
 import pytest
+import datetime
 from unittest.mock import create_autospec
 from django_swagger_utils.drf_server.exceptions \
     import (NotFound,
-            InvalidRequestTypeException)
+            BadRequest)
 from food_management.exceptions.exceptions \
     import (InvalidMealId,
             ItemNotFound,
@@ -10,7 +11,7 @@ from food_management.exceptions.exceptions \
             InvalidItemId,
             InvalidOrderTime,
             InvalidDuplicateItem,
-            ItemQuantiyLimitReached)
+            InvalidItemQuantity)
 from food_management.interactors.storages.dtos \
     import (OrderDto,
             ItemQuantity)
@@ -82,6 +83,7 @@ def test_order_item_interactor_validate_items_in_meal():
             quantity=3
         )
     ]
+    meal_items = [1,3,4]
     date = "2020-04-19"
     order_time = "10:12:19"
     order_deadline_time = "7:00:00"
@@ -92,14 +94,15 @@ def test_order_item_interactor_validate_items_in_meal():
                 order_time=order_time,
                 order_deadline_time=order_deadline_time
             )
-
+    items_not_in_meal = [2]
     storage = create_autospec(StorageInterface)
     presenter = create_autospec(PresenterInterface)
 
     interactor = OrderBreakFastInteractor(
                     storage=storage
                  )
-    storage.validate_items_in_meal_id.side_effect = ItemNotFound
+    storage.validate_meal_id.side_effect = None
+    storage.validate_items_in_meal_id.return_value = meal_items
     presenter.raise_exception_for_item_not_found.side_effect = NotFound
 
     # Act
@@ -108,24 +111,30 @@ def test_order_item_interactor_validate_items_in_meal():
                 order=order,
                 presenter=presenter
             )
-    storage \
-        .validate_items_in_meal_id \
-            .assert_called_once_with(meal_id=meal_id,
-                                     items=items)
+    err = presenter.raise_exception_for_item_not_found.call_args.kwargs['items_not_in_meal']
+    storage.validate_meal_id.assert_called_once()
+    storage.validate_items_in_meal_id \
+        .assert_called_once_with(items=items,
+                                 meal_id=meal_id)
     presenter.raise_exception_for_item_not_found.assert_called_once()
+    assert err.items_not_in_meal == items_not_in_meal
 
-def test_order_item_interactor_item_quantity_limit():
+def test_order_item_interactor_item_invalid_quantity():
 
     # Arrange
     meal_id = 4
-    items = [
+    request_items = [
         ItemQuantity(
             item_id=1,
-            quantity=5
+            quantity=-5
         ),
         ItemQuantity(
             item_id=4,
             quantity=6
+        ),
+        ItemQuantity(
+            item_id=6,
+            quantity=-6
         )
     ]
     date = "2020-4-9"
@@ -134,10 +143,12 @@ def test_order_item_interactor_item_quantity_limit():
     order = OrderDto(
                 meal_id=meal_id,
                 date=date,
-                items=items,
+                items=request_items,
                 order_time=order_time,
                 order_deadline_time=order_deadline_time
             )
+    items_with_invalid_quantity = [1,6]
+    meal_items = [1,4,6]
 
     storage = create_autospec(StorageInterface)
     presenter = create_autospec(PresenterInterface)
@@ -145,75 +156,81 @@ def test_order_item_interactor_item_quantity_limit():
     interactor = OrderBreakFastInteractor(
                     storage=storage
                  )
-
-    storage.validate_item_quantity_limit \
-        .side_effect = ItemQuantiyLimitReached
+    storage.validate_meal_id.return_value = None
+    storage.validate_items_in_meal_id.return_value = meal_items
     presenter.raise_exception_for_item_quanity_limit_reached \
-        .side_effect = InvalidRequestTypeException
-
-    # Act    
-    with pytest.raises(InvalidRequestTypeException):
+        .side_effect = BadRequest
+    # Act
+    with pytest.raises(BadRequest):
         interactor \
             .order_breakfast_wrapper(order=order,
                                      presenter=presenter)
+    
+    err = presenter.raise_exception_for_item_quanity_limit_reached.call_args.kwargs['items']
+    assert err.items == items_with_invalid_quantity
 
-    storage.validate_item_quantity_limit.assert_called_once_with(items)
-    presenter.raise_exception_for_item_quanity_limit_reached.assert_called_once()
-
-def test_order_item_interactor_order_invalid_date():
+def test_order_item_interactor_with_invalid_order_date():
 
     # Arrange
+    
     meal_id = 5
-    date = "2020-9-5"
-    order_time = "10:12:48"
+    date = datetime.datetime(2020, 9, 5)
+    order_time = "10:34:11"
     order_deadline_time = "7:00:00"
     items = [
-        ItemQuantity(
-            item_id=1,
-            quantity=4
-        ),
-        ItemQuantity(
-            item_id=2,
-            quantity=5
-        )
+      ItemQuantity(
+        item_id = 1,
+        quantity = 4
+      ),
+      ItemQuantity(
+        item_id = 2,
+        quantity = 5
+      ),
+      ItemQuantity(
+        item_id = 3,
+        quantity = 2
+      )
     ]
+    meal_valid_date = datetime.datetime(2020, 8, 6)
     order = OrderDto(
-                meal_id=meal_id,
-                date=date,
-                items=items,
-                order_time=order_time,
-                order_deadline_time=order_deadline_time
-            )
-
+      meal_id = meal_id,
+      date = date,
+      items = items,
+      order_time = order_time,
+      order_deadline_time = order_deadline_time
+    )
+    meal_items = [1,2,3]
     storage = create_autospec(StorageInterface)
     presenter = create_autospec(PresenterInterface)
-
+    
     interactor = OrderBreakFastInteractor(
-                        storage=storage
-                 )
-
+      storage = storage
+    )
+    storage.validate_meal_id.return_value = None
+    storage.validate_items_in_meal_id.return_value = meal_items
     storage.validate_order_date \
-        .side_effect = InvalidDate
-    presenter.raise_exception_for_order_invalid_date \
-        .side_effect = InvalidRequestTypeException
-
-    with pytest.raises(InvalidRequestTypeException):
-        interactor.order_breakfast_wrapper(
-                        order=order,
-                        presenter=presenter
-                   )
+      .return_value = meal_valid_date
+    presenter.raise_exception_for_invalid_order_date \
+      .side_effect = BadRequest
+    
+    # Act
+    with pytest.raises(BadRequest):
+      interactor.order_breakfast_wrapper(
+        order = order,
+        presenter = presenter
+      )
     storage.validate_order_date \
-        .assert_called_once_with(date=date)
-    presenter.raise_exception_for_order_invalid_date \
-        .assert_called_once()
+      .assert_called_once_with(meal_id=meal_id)
+    presenter.raise_exception_for_invalid_order_date \
+      .assert_called_once()
 
 def test_order_item_interactor_with_order_in_right_time():
 
     # Arrange
     meal_id = 5
-    date = "2020-9-5"
-    order_time = "10:34:11"
-    order_deadline_time = "7:00:00"
+    date = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    order_time = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    order_deadline_time = datetime.datetime(2020, 9, 12, 9, 00, 00)
     items = [
         ItemQuantity(
             item_id=1,
@@ -224,6 +241,8 @@ def test_order_item_interactor_with_order_in_right_time():
             quantity=5
         )
     ]
+    meal_valid_date = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    meal_items = [1,2]
     order = OrderDto(
                 meal_id=meal_id,
                 date=date,
@@ -237,43 +256,49 @@ def test_order_item_interactor_with_order_in_right_time():
     interactor = OrderBreakFastInteractor(
                         storage=storage
                  )
-
+    storage.validate_meal_id.return_value = None
+    storage.validate_items_in_meal_id.return_value = meal_items
+    storage.validate_order_date.return_value = meal_valid_date
     storage.validate_ordered_in_right_time \
-        .side_effect = InvalidOrderTime
+        .return_value = order_deadline_time
     presenter.raise_exception_for_invalid_order_time \
-        .side_effect = InvalidRequestTypeException
+        .side_effect = BadRequest
 
-    with pytest.raises(InvalidRequestTypeException):
+    with pytest.raises(BadRequest):
         interactor.order_breakfast_wrapper(
                         order=order,
                         presenter=presenter
-                   )
+                  )
 
     storage.validate_ordered_in_right_time \
-        .assert_called_once_with(
-            order_time=order_time,
-            breakfast_time=order_deadline_time
-        )
+        .assert_called_once_with(meal_id=meal_id)
     presenter.raise_exception_for_invalid_order_time \
         .assert_called_once()
+
 
 def test_order_item_interactor_with_invalid_item_ids():
 
     # Arrange
     meal_id = 5
-    date = "2020-9-5"
-    order_time = "10:34:11"
-    order_deadline_time = "7:00:00"
+    date = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    order_time = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    order_deadline_time = datetime.datetime(2020, 9, 12, 9, 00, 00)
     items = [
         ItemQuantity(
-            item_id=1,
+            item_id=-1,
             quantity=4
         ),
         ItemQuantity(
-            item_id=2,
+            item_id=-2,
+            quantity=5
+        ),
+        ItemQuantity(
+            item_id=3,
             quantity=5
         )
     ]
+    meal_valid_date = datetime.datetime(2020, 9, 12, 12, 30, 12)
+    meal_items = [-1, -2, 3]
     order = OrderDto(
                 meal_id=meal_id,
                 date=date,
@@ -281,21 +306,19 @@ def test_order_item_interactor_with_invalid_item_ids():
                 order_time=order_time,
                 order_deadline_time=order_deadline_time
             )
-    item_ids = [1]
-    err  = InvalidItemId(item_ids)
     storage = create_autospec(StorageInterface)
     presenter = create_autospec(PresenterInterface)
 
     interactor = OrderBreakFastInteractor(
                         storage=storage
                  )
+    storage.validate_meal_id.return_value = None
+    storage.validate_items_in_meal_id.return_value = meal_items
+    storage.validate_order_date.return_value = meal_valid_date
+    storage.validate_ordered_in_right_time \
+        .return_value = order_deadline_time
 
-    storage.validate_item_ids \
-        .side_effect = err
-    presenter.raise_exception_for_invalid_item_ids \
-        .side_effect = InvalidRequestTypeException
-
-    with pytest.raises(InvalidRequestTypeException):
+    with pytest.raises(BadRequest):
         interactor \
             .order_breakfast_wrapper(order=order,
                                      presenter=presenter)
@@ -305,7 +328,8 @@ def test_order_item_interactor_with_invalid_item_ids():
     presenter.raise_exception_for_invalid_item_ids \
         .assert_called_once()
 
-def test_order_item_interactor_with_invalid_duplicate_item_ids():
+
+# def test_order_item_interactor_with_invalid_duplicate_item_ids():
 
     # Arrange
     meal_id = 5
@@ -345,9 +369,9 @@ def test_order_item_interactor_with_invalid_duplicate_item_ids():
     storage.vaildate_duplicate_item_ids \
         .side_effect = err
     presenter.raise_exception_for_invalid_duplicate_items_ids \
-        .side_effect = InvalidRequestTypeException
+        .side_effect = BadRequest
 
-    with pytest.raises(InvalidRequestTypeException):
+    with pytest.raises(BadRequest):
         interactor \
             .order_breakfast_wrapper(order=order,
                                      presenter=presenter)

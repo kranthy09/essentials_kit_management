@@ -1,4 +1,3 @@
-import datetime
 from typing import List
 from food_management.exceptions.exceptions \
     import (InvalidMealId,
@@ -7,7 +6,7 @@ from food_management.exceptions.exceptions \
             InvalidItemId,
             InvalidOrderTime,
             InvalidDuplicateItem,
-            InvalidItemQuantity)
+            ItemQuantiyLimitReached)
 from food_management.interactors.storages.dtos \
     import (OrderDto,
             ItemQuantity)
@@ -48,15 +47,12 @@ class OrderBreakFastInteractor:
 
         except ItemNotFound as err:
             presenter \
-                .raise_exception_for_item_not_found(items_not_in_meal=err)
 
-        except InvalidItemQuantity as err:
-            presenter \
-                .raise_exception_for_item_quanity_limit_reached(
-                        items=err
-                    )
+        except ItemQuantiyLimitReached:
+            presenter.raise_exception_for_item_quanity_limit_reached()
+
         except InvalidDate:
-            presenter.raise_exception_for_invalid_order_date()
+            presenter.raise_exception_for_order_invalid_date()
 
         except InvalidOrderTime:
             presenter.raise_exception_for_invalid_order_time()
@@ -75,21 +71,21 @@ class OrderBreakFastInteractor:
         # items in meal validation
         self._check_items_in_meal(meal_id = order.meal_id,
                                   items=order.items)
-        # order quantity validation
-        self._check_item_invalid_quantity(request_items=order.items)
+        # order limit validation
+        self.storage.validate_item_quantity_limit(order.items)
         # order date validation
-        self._check_order_date(meal_id=order.meal_id,
-                               order_date=order.date,
-                               order_time=order.order_time)
+        self.storage.validate_order_date(order.date)
+        # order time(has to check after the date is checked)
+        self.storage \
+            .validate_ordered_in_right_time(
+                                order_time=order.order_time,
+                                breakfast_time = order.order_deadline_time
+                            )
         # validate item ids
-        self._check_item_ids_are_valid(items=order.items)
+        self.storage.validate_item_ids(items=order.items)
         # validate duplicate item ids
         self.storage.vaildate_duplicate_item_ids(items=order.items)
 
-    def _check_item_ids_are_valid(self, items: List[ItemQuantity]):
-        item_ids = [item.item_id for item in items]
-        self.storage.validate_item_ids(item_ids=item_ids)
-        
 
     def _check_items_in_meal(self,
                              meal_id: int,
@@ -106,30 +102,3 @@ class OrderBreakFastInteractor:
         if items_not_in_meal:
             raise ItemNotFound(
                     items_not_in_meal=items_not_in_meal)
-
-    def _check_item_invalid_quantity(self, request_items: List[ItemQuantity]):
-
-        items_with_invalid_quantity = []
-        for item in request_items:
-            is_invalid_quantity = item.quantity < 0
-            if is_invalid_quantity:
-                items_with_invalid_quantity.append(
-                        item.item_id
-                    )
-        if items_with_invalid_quantity:
-            raise InvalidItemQuantity(items=items_with_invalid_quantity)
-
-    def _check_order_date(self,
-                          meal_id: int,
-                          order_date: datetime,
-                          order_time: datetime):
-        meal_valid_date = self.storage.validate_order_date(meal_id=meal_id)
-        is_not_order_date_valid = not(meal_valid_date.date() >= order_date.date())
-        is_order_date_valid = meal_valid_date.date() == order_date.date()
-        if is_not_order_date_valid:
-            raise InvalidDate
-        elif is_order_date_valid:
-            meal_valid_time = self.storage.validate_ordered_in_right_time(meal_id=meal_id)
-            is_not_order_in_right_time = not(order_time.time() < meal_valid_time.time())
-            if is_not_order_in_right_time:
-                raise InvalidOrderTime
