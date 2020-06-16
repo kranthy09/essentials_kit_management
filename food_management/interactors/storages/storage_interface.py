@@ -35,8 +35,3 @@ class StorageInterface:
     def validate_item_ids(self,
                           item_ids: List[int]):
         pass
-
-    @abstractmethod
-    def vaildate_duplicate_item_ids(self,
-                                    items: List[ItemQuantity]):
-        pass

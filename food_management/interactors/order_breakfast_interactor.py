@@ -62,7 +62,8 @@ class OrderBreakFastInteractor:
             presenter.raise_exception_for_invalid_order_time()
 
         except InvalidDuplicateItem as err:
-            presenter.raise_exception_for_invalid_duplicate_items_ids(err)
+            presenter \
+                .raise_exception_for_invalid_duplicate_items_ids(item_ids = err)
 
 
     def order_breakfast(
@@ -84,7 +85,7 @@ class OrderBreakFastInteractor:
                                order_date=order.date,
                                order_time=order.order_time)
         # validate duplicate item ids
-        self.storage.vaildate_duplicate_item_ids(items=order.items)
+        self._check_duplicate_item_ids(items=order.items)
 
     def _check_item_ids_are_valid(self, items: List[ItemQuantity]):
         item_ids = [item.item_id for item in items]
@@ -141,3 +142,17 @@ class OrderBreakFastInteractor:
             is_not_order_in_right_time = not(order_time.time() < meal_valid_time.time())
             if is_not_order_in_right_time:
                 raise InvalidOrderTime
+
+    def _check_duplicate_item_ids(self, items: List[ItemQuantity]):
+        from collections import Counter
+        cnt = Counter()
+        item_ids = [item.item_id for item in items]
+        for item in item_ids:
+            cnt[item] += 1
+        duplicate_items = []
+        for key in cnt.keys():
+            if cnt[key] > 1:
+                duplicate_items.append(key)
+        if duplicate_items:
+            raise InvalidDuplicateItem(item_ids=duplicate_items)
+            
