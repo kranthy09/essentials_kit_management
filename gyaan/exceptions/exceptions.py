@@ -3,3 +3,6 @@ class InvalidPostId(Exception):
 
 class InvalidDomainId(Exception):
     pass
+
+class InvalidUserIdInDomain(Exception):
+    pass

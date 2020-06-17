@@ -6,5 +6,6 @@
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_invalid_order_date",
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_order_in_right_time",
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_invalid_duplicate_item_ids",
-  "gyaan/tests/interactors/test_get_domain_details.py::test_get_domain_details_interactor_invalid_domain_id"
+  "gyaan/tests/interactors/test_get_domain_details.py::test_get_domain_details_interactor_invalid_domain_id",
+  "gyaan/tests/interactors/test_get_domain_details.py::test_get_domain_details_interactor_invalid_user_in_domain"
 ]

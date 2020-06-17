@@ -19,3 +19,7 @@ class PresenterInterface(ABC):
     @abstractmethod
     def raise_exception_for_invalid_domain_id(self):
         pass
+
+    @abstractmethod
+    def raise_exception_for_invalid_user_in_domain(self):
+        pass

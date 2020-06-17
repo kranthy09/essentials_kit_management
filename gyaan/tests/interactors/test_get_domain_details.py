@@ -40,4 +40,35 @@ def test_get_domain_details_interactor_invalid_domain_id():
         .assert_called_once_with(domain_id=domain_id)
     presenter.raise_exception_for_invalid_domain_id \
         .assert_called_once()
-    
+
+
+def test_get_domain_details_interactor_invalid_user_in_domain():
+
+    # Arrange
+    user_id = 2
+    domain_id = 5
+
+    storage = create_autospec(StorageInterface)
+    presenter = create_autospec(PresenterInterface)
+
+    interactor = DomainDetailsInteractor(
+                    storage=storage
+                 )
+    storage.validate_domain_id.return_value = None
+    storage.validate_user_follows_domain.return_value = False
+    presenter.raise_exception_for_invalid_user_in_domain \
+        .side_effect = NotFound
+
+    # Act
+    with pytest.raises(NotFound):
+        interactor.get_domain_details_wrapper(
+                user_id=user_id,
+                domain_id=domain_id,
+                presenter=presenter
+            )
+
+    storage.validate_user_follows_domain \
+        .assert_called_once_with(user_id=user_id,
+                                 domain_id=domain_id)
+    presenter.raise_exception_for_invalid_user_in_domain \
+        .assert_called_once()

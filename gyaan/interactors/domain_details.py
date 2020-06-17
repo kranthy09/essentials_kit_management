@@ -1,5 +1,6 @@
 from gyaan.exceptions.exceptions \
-    import InvalidDomainId
+    import (InvalidDomainId,
+            InvalidUserIdInDomain)
 from gyaan.interactors.storages.storage_interface \
     import StorageInterface
 from gyaan.interactors.presenters.presenter_interface \
@@ -23,19 +24,22 @@ class DomainDetailsInteractor:
                                      user_id=user_id)
         except InvalidDomainId:
             presenter.raise_exception_for_invalid_domain_id()
+        except InvalidUserIdInDomain:
+            presenter.raise_exception_for_invalid_user_in_domain()
     
 
     def _get_domain_details(self, user_id: int,
                             domain_id: int):
         self.storage.validate_domain_id(domain_id=domain_id)
-        self.storage \
+        self \
             ._check_is_user_follows_domain(user_id=user_id,
                                              domain_id=domain_id)
 
     def _check_is_user_follows_domain(self, user_id: int,
                                       domain_id: int):
-        is_user_following_domain \
-            = self.storage \
+        is_user_not_following_domain \
+            = not(self.storage \
                 .validate_user_follows_domain(user_id=user_id,
-                                              domain_id=domain_id)
-        
+                                              domain_id=domain_id))
+        if is_user_not_following_domain:
+            raise InvalidUserIdInDomain
