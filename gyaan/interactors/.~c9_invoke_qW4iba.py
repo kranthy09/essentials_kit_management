@@ -1,5 +1,4 @@
-from gyaan.interactors.presenters.dtos \
-    import DomainDetailsDto
+from gyaan.interactors.r
 from gyaan.exceptions.exceptions \
     import (InvalidDomainId,
             InvalidUserIdInDomain)
@@ -22,18 +21,12 @@ class DomainDetailsInteractor:
     def get_domain_details_wrapper(self, user_id: int, domain_id: int, 
                                      presenter: PresenterInterface):
         try:
-            domain_details_dto \
-                = self._get_domain_details(domain_id=domain_id,
-                                            user_id=user_id)
+            self._get_domain_details(domain_id=domain_id,
+                                     user_id=user_id)
         except InvalidDomainId:
             presenter.raise_exception_for_invalid_domain_id()
         except InvalidUserIdInDomain:
             presenter.raise_exception_for_invalid_user_in_domain()
-        response = presenter \
-                    .get_response_for_domain_details(
-                            domain_details_dto=domain_details_dto
-                        )
-        return response
 
     def _get_domain_details(self, user_id: int,
                             domain_id: int):
@@ -53,16 +46,14 @@ class DomainDetailsInteractor:
                     domain_id=domain_id
                   )
         domain_details_dto \
-            = DomainDetailsDto(
+            = DomainDetailsDTO(
                 domain=domain_dto,
-                domain_stats=domain_stats_dto,
-                domain_experts=domain_experts_dtos,
+                domain_stats_dto=domain_stats_dto,
+                domain_experts_dtos=domain_experts_dtos,
                 is_user_domain_expert=is_user_domain_expert,
                 join_requests=domain_requests,
-                requested_users=requested_user_dtos,
-                user_id=user_id
+                requested_users=requested_user_dtos
             )
-        return domain_details_dto
 
     def _check_is_user_follows_domain(self, user_id: int,
                                       domain_id: int):
@@ -87,7 +78,7 @@ class DomainDetailsInteractor:
         if domain_requests_dtos:
             requested_user_dtos = self.storage \
                 .get_user_details(
-                    user_ids=[requested_user.request_id \
-                            for requested_user in domain_requests_dtos]
+                    user_id=[requested_user.request_id \
+                        for requested_user in requested_user_dtos]
                  )
         return is_user_domain_expert, domain_requests_dtos, requested_user_dtos

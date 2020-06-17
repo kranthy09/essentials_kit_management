@@ -1,5 +1,7 @@
 from abc import ABC
 from abc import abstractmethod
+from gyaan.interactors.presenters.dtos \
+    import DomainDetailsDto
 
 
 class PresenterInterface(ABC):
@@ -22,4 +24,10 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def raise_exception_for_invalid_user_in_domain(self):
+        pass
+
+    @abstractmethod
+    def get_response_for_domain_details(self,
+                                domain_details_dto: DomainDetailsDto
+                            ):
         pass
