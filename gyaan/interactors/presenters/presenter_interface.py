@@ -15,3 +15,7 @@ class PresenterInterface(ABC):
     @abstractmethod
     def get_create_comment_response(self, comment_id: int):
         pass
+
+    @abstractmethod
+    def raise_exception_for_invalid_domain_id(self):
+        pass
