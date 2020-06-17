@@ -418,7 +418,7 @@ def test_order_item_interactor_with_invalid_duplicate_item_ids():
         .assert_called_once_with(meal_id=meal_id)
     storage.validate_item_ids \
         .assert_called_once_with(item_ids=item_ids)
-    storage.validate_ordered_in_right_date \
+    storage.validate_order_date \
         .assert_called_once_with(meal_id=meal_id)
     storage.validate_ordered_in_right_time \
         .assert_called_once_with(meal_id=meal_id)
