@@ -4,5 +4,6 @@
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_validate_items_in_meal",
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_item_invalid_quantity",
   "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_invalid_order_date",
-  "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_order_in_right_time"
+  "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_order_in_right_time",
+  "food_management/tests/interactors/test_order_breakfast_interactor.py::test_order_item_interactor_with_invalid_duplicate_item_ids"
 ]
