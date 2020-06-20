@@ -1,10 +1,18 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
+from typing import List
 from gyaan.interactors.storages.dtos \
     import (DomainDto,
             DomainStatsDto,
             DomainRequestDto,
-            UserDetailsDto)
+            UserDetailsDto,
+            PostDto,
+            PostTagDetails,
+            PostReactionsCount,
+            PostCommentsCount,
+            CommentReactionsCount,
+            CommentRepliesCount,
+            CommentDto)
 
 
 class StorageInterface(ABC):
@@ -17,8 +25,6 @@ class StorageInterface(ABC):
     def validate_user_follows_domain(self, user_id: int,
                                      domain_id: int):
         pass
-
-    @abstractmethod
 
     @abstractmethod
     def get_domain_dto(self, domain_id: int)-> DomainDto:
@@ -43,7 +49,54 @@ class StorageInterface(ABC):
         pass
 
     @abstractmethod
-    def get_domain_requests(self, user_id: int,
-                            domain_id: int)-> \
-                    List[DomainRequestDto]:
+    def get_domain_requests(
+            self, user_id: int, domain_id: int)-> \
+        List[DomainRequestDto]:
+        pass
+
+    @abstractmethod
+    def get_valid_post_ids(self, post_ids: List[int])-> \
+        List[int]:
+        pass
+
+    @abstractmethod
+    def get_post_details(
+            self, post_ids: List[int])-> \
+        List[PostDto]:
+        pass
+
+    @abstractmethod
+    def get_post_tags(self, post_ids: List[int])-> \
+        PostTagDetails:
+        pass
+
+    @abstractmethod
+    def get_post_reactions_count(self, post_ids: List[int])-> \
+        PostReactionsCount:
+        pass
+
+    @abstractmethod
+    def get_post_comments_count(self, post_ids: List[int])-> \
+        PostCommentsCount:
+        pass
+
+    @abstractmethod
+    def get_latest_comments(self, post_id: int,
+                           no_of_comments: int)-> \
+        List[int]:
+        pass
+
+    @abstractmethod
+    def get_comment_reactions_count(self ,comment_ids: List[int])-> \
+        List[CommentReactionsCount]:
+        pass
+
+    @abstractmethod
+    def get_comment_replies_count(self, comment_ids: List[int])-> \
+        List[CommentRepliesCount]:
+        pass
+
+    @abstractmethod
+    def get_comments(self, comment_ids: List[int])-> \
+        List[CommentDto]:
         pass

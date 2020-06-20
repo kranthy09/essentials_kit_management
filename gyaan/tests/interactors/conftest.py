@@ -3,7 +3,17 @@ from gyaan.interactors.storages.dtos \
     import (DomainDto,
             DomainStatsDto,
             UserDetailsDto,
-            DomainRequestDto)
+            DomainRequestDto,
+            PostDto,
+            TagDto,
+            PostTagDto,
+            PostTagDetails,
+            PostReactionsCount,
+            PostCommentsCount,
+            CommentReactionsCount,
+            CommentRepliesCount,
+            CommentDto,
+            PostCompleteDetails)
 
 
 @pytest.fixture
@@ -121,3 +131,287 @@ def mock_response():
         ]
     }
     return mock_response
+
+@pytest.fixture
+def post_dtos():
+
+    post_dtos = [
+        PostDto(
+            post_id=1,
+            posted_by_id=5,
+            post_title="ORM",
+            posted_at="13-12-2019,00:00:1568140200.00",
+            post_content="Django ORM"
+        ),
+        PostDto(
+            post_id=2,
+            posted_by_id=6,
+            post_title="Python",
+            posted_at="13-12-2019,00:00:1568140200.00",
+            post_content="Python oops in django"
+        )
+        
+    ]
+    return post_dtos
+
+@pytest.fixture
+def post_tag_details():
+
+    tags = [
+        TagDto(
+            tag_id=1,
+            tag_name="Python"
+        ),
+        TagDto(
+            tag_id=2,
+            tag_name="Django"
+        )
+    ]
+
+    post_tags = [
+        PostTagDto(
+            post_id=1,
+            tag_id=1
+            
+        ),
+        PostTagDto(
+            post_id=1,
+            tag_id=2
+            
+        ),
+        PostTagDto(
+            post_id=2,
+            tag_id=1
+            
+        )
+    ]
+
+    post_tag_details = \
+        PostTagDetails(
+            tags=tags,
+            posttag_ids=post_tags
+        )
+    return post_tag_details
+
+@pytest.fixture
+def post_reactions_count():
+
+    post_reaction_count  = [
+        PostReactionsCount(
+            post_id=1,
+            reactions_count=1
+        ),
+        PostReactionsCount(
+            post_id=2,
+            reactions_count=2
+        )
+    ]
+    return post_reactions_count
+
+@pytest.fixture
+def post_comments_count():
+
+    post_comments_count = [
+        PostCommentsCount(
+            post_id=1,
+            comments_count=1
+        ),
+        PostCommentsCount(
+            post_id=2,
+            comments_count=2
+        )
+    ]
+    return post_comments_count
+
+@pytest.fixture
+def comment_reactions_count():
+
+    comment_reactions_count = [
+        CommentReactionsCount(
+            comment_id=1,
+            reactions_count=2
+        ),
+        CommentReactionsCount(
+            comment_id=2,
+            reactions_count=3
+        )
+    ]
+    return comment_reactions_count
+
+@pytest.fixture
+def comment_replies_count():
+
+    comment_replies_count = [
+        CommentRepliesCount(
+            comment_id=1,
+            replies_count=3
+        ),
+        CommentRepliesCount(
+            comment_id=2,
+            replies_count=3
+        )
+    ]
+    return comment_replies_count
+
+@pytest.fixture
+def comment_dtos():
+
+    comment_dtos = [
+        CommentDto(
+            comment_id=1,
+            commented_by_id=2,
+            commented_on=1,
+            comment_content='comment_content',
+            commented_at="13-12-2019,00:00:1568140200.00",
+            approved_domain_expert=2
+        ),
+        CommentDto(
+            comment_id=2,
+            commented_by_id=5,
+            commented_on=2,
+            comment_content='comment_content',
+            commented_at="13-12-2019,00:00:1568140200.00",
+            approved_domain_expert=3
+        )
+    ]
+    return comment_dtos
+
+@pytest.fixture
+def user_dtos():
+
+    user_dtos = [
+        UserDetailsDto(
+            user_id=2,
+            name="gali",
+            profile_pic_url="gali.com"
+        ),
+        UserDetailsDto(
+            user_id=5,
+            name="rishi kumar",
+            profile_pic_url="kumar.com"
+        ),
+        UserDetailsDto(
+            user_id=8,
+            name="kranthi",
+            profile_pic_url="kranthi.com"
+        )
+    ]
+    return user_dtos
+
+@pytest.fixture
+def post_complete_details(post_dtos, post_reactions_count, user_dtos,
+                          post_comments_count, comment_reactions_count,
+                          comment_replies_count, comment_dtos,
+                          post_tag_details):
+
+    post_complete_details = \
+        PostCompleteDetails(
+            posts=post_dtos,
+            post_tag_details=post_tag_details,
+            post_comments_count=post_comments_count,
+            post_reactions_count=post_reactions_count,
+            comments=comment_dtos,
+            comment_reactions_count=comment_reactions_count,
+            comment_replies_count=comment_replies_count,
+            users=user_dtos,
+            tags=post_tag_details.tags,
+            post_tags=post_tag_details.posttag_ids
+        )
+    return post_complete_details
+
+@pytest.fixture
+def posts_mock_response():
+
+    posts_mock_response = [
+        {
+            
+            "post_id": 1,
+            "content": "Django ORM",
+            "title": "ORM",
+            "date": "13-12-2019,00:00:1568140200.00",
+            "posted_by": {
+                "user_id": 5,
+                "name": "kanakkk",
+                "profile_pic_url": "kanakkk.com"
+            },
+            "domain": {
+                "domain_id": 1,
+                "name": "Django"
+            },
+            "comments_count": 1,
+            "hearts_count":1,
+            "comments":[
+                {
+                    "comment_id":1,
+                    "comment_content": "comment_content",
+                    "commented_by":{
+                        "user_id": 2,
+                        "name": "gali",
+                        "profile_pic_url": "gali.com"
+                    },
+                    "commented_at": "13-12-2019,00:00:1568140200.00",
+                    "approved_by":{
+                        "user_id":3,
+                        "name":"chipmunk",
+                        "profile_pic_url":"chipmunk.com"
+                    },
+                    "replies_count":2,
+                    "hearts_count":3,
+                }
+            ],
+            "tags":[
+                {
+                    "tag_id":1,
+                    "name": "Python"
+                },
+                {
+                    "tag_id":2,
+                    "name":"Django"
+                }
+            ]
+        },
+        {
+            
+            "post_id": 2,
+            "content": "Python oops in django",
+            "title": "Python",
+            "date": "13-12-2019,00:00:1568140200.00",
+            "posted_by": {
+                "user_id": 6,
+                "name": "jasper",
+                "profile_pic_url": "jasper.com"
+            },
+            "domain": {
+                "domain_id": 1,
+                "name": "Django"
+            },
+            "comments_count": 2,
+            "hearts_count":2,
+            "comments":[
+                {
+                    "comment_id":2,
+                    "comment_content": "comment_content",
+                    "commented_by":{
+                        "user_id": 5,
+                        "name": "kanakkk",
+                        "profile_pic_url": "kanakkk.com"
+                    },
+                    "commented_at": "13-12-2019,00:00:1568140200.00",
+                    "approved_by":{
+                        "user_id":3,
+                        "name":"chipmunk",
+                        "profile_pic_url":"chipmunk.com"
+                    },
+                    "replies_count":3,
+                    "hearts_count":3,
+                }
+            ],
+            "tags":[
+                {
+                    "tag_id":1,
+                    "name": "Python"
+                }
+            ]
+        }
+    ]
+    return posts_mock_response
