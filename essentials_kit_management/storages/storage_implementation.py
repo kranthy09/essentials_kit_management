@@ -108,7 +108,7 @@ class StorageImplementation(StorageInterface):
 
         valid_item_ids = []
         for item_id in item_ids:
-            is_item_id_exists = Item.objects.get(id=item_id).exists()
+            is_item_id_exists = Item.objects.filter(id=item_id).exists()
             if is_item_id_exists:
                 valid_item_ids.append(item_id)
         return valid_item_ids
@@ -116,7 +116,7 @@ class StorageImplementation(StorageInterface):
     def get_item_brands(self, item_ids: List[int])-> \
         List[ItemBrandsDto]:
         items = Item.objects.filter(id__in=item_ids) \
-                        .prefetch_related('brand')
+                        .prefetch_related('brand_set')
         item_brands_dtos = []
         for item in items:
             brand_ids = item.brand_set.all().values_list('id', flat=True)
@@ -133,11 +133,13 @@ class StorageImplementation(StorageInterface):
         brands = Brand.objects.all()
         for brand in brands:
             brand_details_dtos.append(
-                brand_id=brand.id,
-                name=brand.name,
-                min_quantity=brand.min_quantity,
-                max_quantity=brand.max_quantity,
-                price=brand.price
+                    BrandDetailsDto(
+                    brand_id=brand.id,
+                    name=brand.name,
+                    min_quantity=brand.min_quantity,
+                    max_quantity=brand.max_quantity,
+                    price=brand.price_per_item
+                )
             )
         return brand_details_dtos
 
@@ -145,7 +147,7 @@ class StorageImplementation(StorageInterface):
         List[int]:
         valid_section_ids = []
         for section_id in section_ids:
-            is_section_id_exists = Section.objects.get(id=section_id).exists()
+            is_section_id_exists = Section.objects.filter(id=section_id).exists()
             if is_section_id_exists:
                 valid_section_ids.append(
                         section_id
@@ -167,13 +169,14 @@ class StorageImplementation(StorageInterface):
                         form_name=form_obj.title,
                         form_state=form_obj.state,
                         form_description=form_obj.description,
-                        closing_date=form_obj.closed_date
+                        closing_date=str(form_obj.closed_date)
                     )
 
     def get_forms_sections_dtos(self, form_id: int)-> \
         List[FormSectionDto]:
-        form = Form.objects.filter(id=form_id) \
-            .prefetch_related('section')
+        forms = Form.objects.filter(id=form_id) \
+            .prefetch_related('section_set')
+        form = forms[0]
         sections = form.section_set.all()
         form_sections_dtos = []
         for section in sections:
@@ -190,7 +193,7 @@ class StorageImplementation(StorageInterface):
     def get_section_items_dtos(self, section_ids: List[int])-> \
         List[SectionItemDto]:
         sections = Section.objects \
-            .filter(id=section_ids).prefect_related('item')
+            .filter(id__in=section_ids).prefetch_related('item_set')
         section_items_dtos = []
         for section in sections:
             items = section.item_set.all()
@@ -212,7 +215,7 @@ class StorageImplementation(StorageInterface):
                         section_id=section_id,
                         item_id=item.id,
                         item_name=item.name,
-                        item_description=item.description
+                        item_description=item.item_description
                     )
                 )
         return section_item_dtos
@@ -224,9 +227,11 @@ class StorageImplementation(StorageInterface):
         items = Item.objects.filter(id__in=item_ids)
         for item in items:
             item_details_dtos.append(
+                ItemDetailsDto(
                     item_id=item.id,
                     name=item.name,
-                    description=item.description
+                    description=item.item_description
+                )
             )
         return item_details_dtos
 

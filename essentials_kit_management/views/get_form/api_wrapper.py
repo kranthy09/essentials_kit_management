@@ -29,5 +29,4 @@ def api_wrapper(*args, **kwargs):
                     presenter=presenter
                 )
     response_data = json.dumps(response)
-    print(response_data)
     return HttpResponse(response_data, status=200)

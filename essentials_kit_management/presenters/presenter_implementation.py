@@ -200,7 +200,7 @@ class PresenterImplementation(PresenterInterface):
 
         complete_section_details_dicts = []
         for section_item_dict in section_items_dicts:
-            items = section_items_dicts['items']
+            items = section_item_dict['items']
             combined_items = []
             for item in items:
                 for item_brand_dict in item_brands_dicts:
