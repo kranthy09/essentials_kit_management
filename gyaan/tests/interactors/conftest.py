@@ -14,7 +14,8 @@ from gyaan.interactors.storages.dtos \
             CommentRepliesCount,
             CommentDto,
             PostCompleteDetails)
-
+from gyaan.interactors.presenters.dtos \
+    import DomainDetailsDto, DomainDetailsWithPosts
 
 @pytest.fixture
 def domain_dto():
@@ -81,6 +82,20 @@ def requested_user_dtos():
         )
     ]
     return requested_user_dtos
+
+@pytest.fixture
+def domain_details_dto(domain_dto):
+    domain_details_dto = \
+        DomainDetailsDto(
+            domain=domain_dto,
+            domain_stats=domain_stats_dto,
+            domain_experts=domain_expert_dtos,
+            join_requests=domain_requests_dtos,
+            requested_users=requested_user_dtos,
+            is_user_domain_expert=True,
+            user_id=10
+        )
+    return domain_details_dto
 
 @pytest.fixture
 def mock_response():
@@ -415,3 +430,67 @@ def posts_mock_response():
         }
     ]
     return posts_mock_response
+
+@pytest.fixture
+def domain_details_with_posts(domain_details_dto,
+                              post_complete_details):
+
+    domain_details_with_posts = \
+        DomainDetailsWithPosts(
+            domain_details=domain_details_dto,
+            post_complete_details=post_complete_details
+        )
+    return domain_details_with_posts
+
+@pytest.fixture
+def domain_posts_mock_response():
+
+    domain_posts_mock_response = \
+        {
+        "domain_id": 1,
+        "name": "Django",
+        "description": "Python framework",
+        "user_id": 10,
+        "is_user_domain_expert": True,
+        "stats": {
+            "followers": 600,
+            "posts": 999,
+            "stars": 450
+        },
+        "domain_experts": [
+                {
+                    "user_id": 2,
+                    "name": "skywalker",
+                    "profile_pic_url": "skywalker.com"
+                },
+                {
+                    "user_id": 3,
+                    "name": "chipmunk",
+                    "profile_pic_url": "chipmunk.com"
+                }
+            ],
+        "join_requests": [
+                {
+                    "request_id": 5,
+                    "user_id": 2
+                },
+                {
+                    "request_id": 6,
+                    "user_id": 2
+                }
+            ],
+        "requested_users": [
+            {
+                "user_id":5,
+                "name":"kanakkk",
+                "profile_pic_url":"kanakkk.com"
+            },
+            {
+                "user_id": 6,
+                "name": "jasper",
+                "profile_pic_url": "jasper.com"
+            }
+        ],
+        "posts": posts_mock_response
+    }
+    return domain_posts_mock_response

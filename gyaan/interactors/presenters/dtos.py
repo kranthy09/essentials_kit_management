@@ -5,6 +5,7 @@ from gyaan.interactors.storages.dtos \
             DomainStatsDto,
             UserDetailsDto,
             DomainRequestDto,
+            PostCompleteDetails
             )
 
 
@@ -17,3 +18,9 @@ class DomainDetailsDto:
     requested_users: List[UserDetailsDto]
     is_user_domain_expert: bool
     user_id: int
+
+
+@dataclass
+class DomainDetailsWithPosts:
+    domain_details: DomainDetailsDto
+    post_complete_details: PostCompleteDetails

@@ -1,7 +1,7 @@
 from abc import ABC
 from abc import abstractmethod
 from gyaan.interactors.presenters.dtos \
-    import DomainDetailsDto
+    import DomainDetailsDto, DomainDetailsWithPosts
 from gyaan.interactors.storages.dtos \
     import PostCompleteDetails
 from typing import List
@@ -59,4 +59,10 @@ class PresenterInterface(ABC):
     def get_posts_response(
                 self, post_complete_details: PostCompleteDetails
             ):
+        pass
+
+    @abstractmethod
+    def get_domain_details_with_posts_response(
+                    self,
+                    domain_details_with_posts: DomainDetailsWithPosts):
         pass

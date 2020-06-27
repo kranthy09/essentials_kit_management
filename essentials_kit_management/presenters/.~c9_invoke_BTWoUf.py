@@ -1,11 +1,5 @@
 from essentials_kit_management.exceptions.exceptions\
-    import (InvalidUsername,
-            InvalidPassword,
-            UniqueItemException,
-            UniqueSectionException,
-            InvalidSectionId,
-            InvalidItem,
-            InvalidForm)
+    import InvalidUsername, InvalidPassword
 from essentials_kit_management.interactors.presenters\
     .presenter_interface\
         import PresenterInterface
@@ -17,12 +11,8 @@ from essentials_kit_management.interactors.storages.dtos\
             FormDetailsDto,
             ItemDetailsWithBrandsDto,
             SectionCompleteDetailsDto,
-            FormCompleteDetailsDto,
-            ItemBrandsDto,
-            BrandDetailsDto,
-            SectionItemsDto,
-            ItemDetailsDto,
-            FormSectionDto
+            UniqueItemException
+            InvalidItem
     )
 
 
@@ -118,7 +108,7 @@ class PresenterImplementation(PresenterInterface):
         return brands_response
 
     def _get_item_brands_dicts(self,item_brands: List[ItemBrandsDto],
-                                 brand_dtos: List[BrandDetailsDto]):
+                                 brand_dtos: List[BrandDetailsDtos]):
 
         item_brands_dicts = []
         for item_brand in item_brands:
@@ -175,7 +165,6 @@ class PresenterImplementation(PresenterInterface):
     def _get_section_items_dicts(self, section_items: List[SectionItemsDto],
                                 item_details: List[ItemDetailsDto]):
 
-        section_item_dicts = []
         for section_item in section_items:
             items = []
             for item_dto in item_details:
@@ -188,22 +177,20 @@ class PresenterImplementation(PresenterInterface):
                         }
                     )
             section_item_dicts.append(
-                    {
-                        "section_id": section_item.section_id,
-                        "items": items
-                    }
+                    "section_id": section_item.section_id,
+                    "items": items
                 )
         return section_item_dicts
 
-    def _get_complete_section_details_dicts(self, section_items_dicts,
+    def _get_complete_section_details_dicts(self, section_item_dicts,
                                             item_brands_dicts):
 
         complete_section_details_dicts = []
-        for section_item_dict in section_items_dicts:
-            items = section_items_dicts['items']
+        for section_item_dict in section_item_dicts:
+            items = section_item_dicts['items']
             combined_items = []
             for item in items:
-                for item_brand_dict in item_brands_dicts:
+                for item_brand_dict in item_brand_dicts:
                     if item['item_id'] == item_brand_dict['item_id']:
                         item.update(item_brand_dict)
                         combined_items.append(item)
@@ -216,67 +203,10 @@ class PresenterImplementation(PresenterInterface):
         return complete_section_details_dicts
 
     def raise_exception_for_invalid_form_id(self):
-        raise InvalidForm
+        raise InvalidFormId
 
-    def get_form_response(self, form_complete_details_dto: FormCompleteDetailsDto):
 
-        form_details=form_complete_details_dto.form_details
-        form_sections_details=form_complete_details_dto.form_sections_details
-        section_items=form_complete_details_dto.section_items
-        item_details=form_complete_details_dto.item_details
-        item_brands=form_complete_details_dto.item_brands
-        brands_details=form_complete_details_dto.brands_details
 
-        form_sections_dicts \
-            = self._get_form_section_dicts(form_sections_details=form_sections_details,
-                                            form_details=form_details)
 
-        section_items_dicts \
-            = self._get_section_items_dicts(
-                            section_items=section_items,
-                            item_details=item_details)
 
-        item_brands_dicts \
-            = self._get_item_brands_dicts(item_brands=item_brands,
-                                     brand_dtos=brands_details)
-        complete_section_details_dicts \
-            = self._get_complete_section_details_dicts(
-                    section_items_dicts = section_items_dicts,
-                    item_brands_dicts = item_brands_dicts
-                )
-
-        sections = form_sections_dicts['sections']
-        combined_sections = []
-        for section in sections:
-            for section_details_dict in complete_section_details_dicts:
-                if section['section_id'] == section_details_dict['section_id']:
-                    section.update(section_details_dict)
-                    combined_sections.append(section)
-
-        form_sections_dicts = {
-            "form_id": form_details.form_id,
-            "form_name": form_details.form_name,
-            "closing_date": form_details.closing_date,
-            "sections": combined_sections
-        }
-        return form_sections_dicts
-
-    def _get_form_section_dicts(self, form_sections_details: List[FormSectionDto],
-                                form_details: FormDto):
-
-        sections = []
-        for form_section_dto in form_sections_details:
-            sections.append(
-                {
-                    "section_id": form_section_dto.section_id,
-                    "section_title": form_section_dto.section_title,
-                    "section_description": form_section_dto.section_description
-                }
-            )
-        form_sections_dicts = {
-            "form_id": form_details.form_id,
-            "form_name": form_details.form_name,
-            "closing_date": form_details.closing_date,
-            "sections": sections
-        }
-        return form_sections_dicts
+        section_items=form_comlete_details_dto.section

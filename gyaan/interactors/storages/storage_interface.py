@@ -27,6 +27,12 @@ class StorageInterface(ABC):
         pass
 
     @abstractmethod
+    def get_domain_post_ids(self, user_id: int, domain_id: int,
+                            offset: int, limit: int
+                    )-> List[int]:
+        pass
+
+    @abstractmethod
     def get_domain_dto(self, domain_id: int)-> DomainDto:
         pass
 

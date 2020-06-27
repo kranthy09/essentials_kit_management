@@ -52,7 +52,7 @@ class SectionItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     estimated_cost = models.IntegerField(default=0)
     quantity_selected = models.IntegerField(default=0)
-    brand_selected = models.CharField(max_length=100, default='brand')
+    brand_selected = models.OneToOneField(Brand, on_delete=models.CASCADE)
 
 class FormUser(models.Model):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
@@ -61,7 +61,3 @@ class FormUser(models.Model):
     pending_items = models.IntegerField(default=0)
     cost_incurred = models.IntegerField(default=0)
     total_cost_estimate = models.IntegerField(default=0)
-
-
-
-# title = "Snacks Form", description = "snacks form", state = 'Active', closed_date = datetime.datetime(29,07,2020), expected_delivery_date = datetime.datetime(25,07,2020)

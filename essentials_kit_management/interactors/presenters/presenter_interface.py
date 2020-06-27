@@ -6,7 +6,10 @@ from essentials_kit_management.interactors.storages\
                   FormDto,
                   UserBrandDto,
                   FormMetricsDto,
-                  FormDtoToPresenter
+                  FormDtoToPresenter,
+                  ItemDetailsWithBrandsDto,
+                  SectionCompleteDetailsDto,
+                  FormCompleteDetailsDto
           )
 from typing import Dict, List
 
@@ -22,9 +25,8 @@ class PresenterInterface(ABC):
         pass
 
     @abstractmethod
-    def get_response_for_user_auth_token(self,
-                                         user_tokens_dto: UserAuthTokensDTO
-                                        ):
+    def get_response_for_user_auth_token(
+                self, user_tokens_dto: UserAuthTokensDTO):
         pass
 
     @abstractmethod
@@ -33,4 +35,39 @@ class PresenterInterface(ABC):
                     form_dtos: List[FormDto],
                     form_metrics_dtos: List[FormMetricsDto]
             )-> List[Dict[str, str]]:
+        pass
+
+    @abstractmethod
+    def raise_exception_for_unique_item_expected(
+                    self, duplicates: List[int]):
+        pass
+
+    @abstractmethod
+    def raise_exception_for_invalid_item_ids(
+                    self, invalids: List[int]):
+        pass
+
+    @abstractmethod
+    def get_brands_response(self, items_with_brands: ItemDetailsWithBrandsDto):
+        pass
+
+    @ abstractmethod
+    def raise_exception_for_duplicate_section_ids(self, duplicates: List[int]):
+        pass
+
+    @abstractmethod
+    def raise_exception_for_invalid_section_ids(self, invalids: List[int]):
+        pass
+
+    @abstractmethod
+    def get_section_items_response(self,
+                sections_complete_details_dto: SectionCompleteDetailsDto):
+        pass
+
+    @abstractmethod
+    def raise_exception_for_invalid_form_id(self):
+        pass
+
+    @abstractmethod
+    def get_form_response(self, form_complete_details_dto: FormCompleteDetailsDto):
         pass

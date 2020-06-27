@@ -19,7 +19,7 @@ class DomainPostsInteractor:
                                 presenter: PresenterInterface):
 
         try:
-            self.get_domain_posts(user_id=user_id, domain_id=domain_id,
+            return self.get_domain_posts(user_id=user_id, domain_id=domain_id,
                                     offset=offset, limit=limit)
         except InvalidOffset:
             presenter.raise_exception_for_invalid_offset()
@@ -63,13 +63,13 @@ class DomainPostsInteractor:
                                  limit: int, offset: int):
 
         post_ids \
-            = self.storage.get_domain_posts(user_id=user_id,
+            = self.storage.get_domain_post_ids(user_id=user_id,
                                             domain_id=domain_id,
                                             offset=offset, limit=limit)
-        from interactors.get_posts import GetPosts
-        get_posts_interactor = GetPosts(
+        from gyaan.interactors.get_posts import GetPosts
+        interactor_get_posts = GetPosts(
                         storage=self.storage
                      )
         post_details_dtos \
-            = get_posts_interactor.get_posts(post_ids=post_ids)
+            = interactor_get_posts.get_posts(post_ids=post_ids)
         return post_details_dtos

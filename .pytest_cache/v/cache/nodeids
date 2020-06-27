@@ -15,5 +15,17 @@
   "gyaan/tests/interactors/test_get_domain_posts.py::test_get_domain_posts_with_user_not_follows_domain",
   "gyaan/tests/interactors/test_get_posts.py::test_get_posts_with_duplicate_post_ids",
   "gyaan/tests/interactors/test_get_posts.py::test_get_posts_for_invalid_post_ids",
-  "gyaan/tests/interactors/test_get_posts.py::test_get_posts"
+  "gyaan/tests/interactors/test_get_posts.py::test_get_posts",
+  "gyaan/tests/interactors/test_get_domain_posts.py::test_get_domain_posts",
+  "gyaan/tests/interactors/test_get_domain_details_with_post_details.py::test_get_domain_details_with_posts_for_invalid_domain_id",
+  "gyaan/tests/interactors/test_get_domain_details_with_post_details.py::test_get_domain_details_with_posts_for_invalid_offset",
+  "gyaan/tests/interactors/test_get_domain_details_with_post_details.py::test_get_domain_details_with_posts_for_invalid_limit",
+  "gyaan/tests/interactors/test_get_domain_details_with_post_details.py::test_get_domain_details_with_posts_for_invalid_user_in_domain",
+  "gyaan/tests/interactors/test_get_domain_details_with_post_details.py::test_get_domain_details_with_posts",
+  "essentials_kit_management/tests/interactors/test_get_brands.py::test_get_brands_for_duplicate_item_ids",
+  "essentials_kit_management/tests/interactors/test_get_brands.py::test_get_brands_for_invalid_item_ids",
+  "essentials_kit_management/tests/interactors/test_get_brands.py::test_get_posts",
+  "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_duplicate_section_ids",
+  "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_invalid_section_ids",
+  "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items"
 ]
