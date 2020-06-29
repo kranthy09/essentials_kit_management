@@ -61,7 +61,3 @@ class FormUser(models.Model):
     pending_items = models.IntegerField(default=0)
     cost_incurred = models.IntegerField(default=0)
     total_cost_estimate = models.IntegerField(default=0)
-
-
-
-# title = "Snacks Form", description = "snacks form", state = 'Active', closed_date = datetime.datetime(29,07,2020), expected_delivery_date = datetime.datetime(25,07,2020)

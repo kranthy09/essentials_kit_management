@@ -41,13 +41,13 @@ class BrandFactory(factory.Factory.DjangoModelFactory):
     class Meta:
         model = Brand
 
-    name = factory.Sequence(lambda n : "name%d" % n)
+    name = factory.Sequence(lambda n : "brand_name%d" % n)
     min_quantity = factory.fuzzy.FuzzyInteger(0)
     max_quantity = factory.fuzzy.FuzzyInteger(15)
-    price_per_item = factory.fuzzy.FuzzyInteger(50)
+    price_per_item = factory.fuzzy.FuzzyInteger(40, 100)
     item = factory.Iterator(Item.objects.all())
 
-class OrderedItemFactory(factory.Factory.DjangoModelFactory):
+class OrderedItemFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = OrderedItem
