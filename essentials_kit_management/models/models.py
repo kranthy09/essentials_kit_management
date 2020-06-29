@@ -52,7 +52,7 @@ class SectionItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     estimated_cost = models.IntegerField(default=0)
     quantity_selected = models.IntegerField(default=0)
-    brand_selected = models.CharField(max_length=100, default='brand')
+    brand_selected = models.OneToOneField(Brand, on_delete=models.CASCADE)
 
 class FormUser(models.Model):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
