@@ -341,11 +341,11 @@ STAGE = os.environ.get("STAGE", "local")
 
 # AbstractUser
 
-AUTH_USER_MODEL = "essentials_kit_management.user"
+AUTH_USER_MODEL = "user_app.user"
 
 #OAUTH2SQLTOKENSERVICE
 
-DEFAULT_OAUTH_APPLICATION_NAME = "essentials_kit_management"
+DEFAULT_OAUTH_APPLICATION_NAME = "user_app"
 DEFAULT_OAUTH_CLIENT_ID = ""
 DEFAULT_OAUTH_CLIENT_SECRET = ""
 DEFAULT_OAUTH_SCOPES = "read write update superuser"

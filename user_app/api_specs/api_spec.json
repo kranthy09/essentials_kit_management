@@ -1,0 +1,111 @@
+{
+    "swagger": "2.0",
+    "host": "localhost:8000",
+    "basePath": "/api/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Essentails kit api ",
+        "description": "user api"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "super user permission"
+            },
+            "type": "oauth2"
+        }
+    },
+    "definitions": {
+        "userInfo": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password"
+                }
+            }
+        }
+    },
+    "parameters": {
+        "UserLoginParameters": {
+            "name": "login_user",
+            "in": "body",
+            "description": "get username and password",
+            "required": true,
+            "schema": {
+                "$ref": "#/definitions/userInfo"
+            }
+        }
+    },
+    "responses": {
+        "UserloginResponse": {
+            "description": "user login",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "user_id",
+                    "access_token",
+                    "refresh_token",
+                    "expires_in"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/signin/": {
+            "post": {
+                "operationId": "login_user",
+                "summary": "User Login",
+                "description": "Takes username and password and validates the user and servers accesstoken. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/UserLoginParameters"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/UserloginResponse"
+                    }
+                }
+            }
+        }
+    }
+}
