@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from userapp.storages.dtos \
+from user_app.interactors.storages.dtos \
     import UserDto
 from typing import List
 

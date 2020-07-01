@@ -1,24 +1,24 @@
-import factory, factory.fuzzy
+import factory.fuzzy
+import factory
 import string
 import datetime
-from models import (Form, Section,
+from .models import (Form, Section,
                     Item, Brand, FormUser,
                     OrderedItem, SectionItem)
 
 
-class FormFactory(factory.Factory.DjangoModelFactory):
+class FormFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Form
 
     title = factory.fuzzy.FuzzyText(length=6, chars=string.ascii_letters)
     description = factory.fuzzy.FuzzyText(length=10, chars=string.ascii_letters)
-    state = factory.fuzzy.FuzzyChoice(Form.CATEGORY_CHOICES, getter=lambda c: c[0])
+    state = factory.fuzzy.FuzzyChoice(Form.Form_State_Type_choice, getter=lambda c: c[0])
     closed_date = factory.LazyFunction(datetime.datetime.now)
     expected_delivery_date = factory.LazyFunction(datetime.datetime.now)
-    user_id = factory.Sequence(lambda n : "%d" % n)
 
-class SectionFactory(factory.Factory.DjangoModelFactory):
+class SectionFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Section
@@ -36,7 +36,7 @@ class ItemFactory():
     item_description = factory.fuzzy.FuzzyText(length=10, chars=string.ascii_letters)
     section = factory.Iterator(Section.objects.all())
 
-class BrandFactory(factory.Factory.DjangoModelFactory):
+class BrandFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Brand
@@ -59,7 +59,7 @@ class OrderedItemFactory(factory.django.DjangoModelFactory):
     delivered_items = factory.fuzzy.FuzzyInteger(10)
     quantity = factory.fuzzy.FuzzyInteger(10)
 
-class SectionItemFactory(factory.Factory.DjangoModelFactory):
+class SectionItemFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = SectionItem
@@ -70,7 +70,7 @@ class SectionItemFactory(factory.Factory.DjangoModelFactory):
     quantity_selected = factory.fuzzy.FuzzyInteger(10)
     brand_selected = factory.Sequence(lambda n : "brand%d" % n)
 
-class FormUserFactory(factory.Factory.DjangoModelFactory):
+class FormUserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = FormUser

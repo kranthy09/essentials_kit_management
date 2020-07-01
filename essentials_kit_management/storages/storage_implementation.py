@@ -14,7 +14,7 @@ from essentials_kit_management.interactors.storages.dtos \
            ItemDetailsDto
          )
 from essentials_kit_management.models.models\
-    import User, Form, Section, Item, Brand, OrderedItem
+    import Form, Section, Item, Brand, OrderedItem
 from essentials_kit_management.interactors.storages\
     .storage_interface \
         import StorageInterface

@@ -27,5 +27,6 @@
   "essentials_kit_management/tests/interactors/test_get_brands.py::test_get_posts",
   "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_duplicate_section_ids",
   "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_invalid_section_ids",
-  "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items"
+  "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items",
+  "user_app/tests/interactors/test_oauth_interactor.py::test_for_oauth_interactor"
 ]

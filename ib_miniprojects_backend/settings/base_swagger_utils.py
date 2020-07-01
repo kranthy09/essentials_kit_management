@@ -75,5 +75,5 @@ CUSTOM_EXCEPTIONS_TO_LOG_IN_SENTRY = []
 
 # AbstractUser
 
-AUTH_USER_MODEL = "user_app.user"
+#AUTH_USER_MODEL = "user_app.UserInfo"
 

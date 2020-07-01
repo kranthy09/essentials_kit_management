@@ -9,10 +9,8 @@ from typing import List
 
 class GetUser:
 
-    def __init__(self, storage: StorageInterface,
-                 presenter: PresenterInterface):
+    def __init__(self, storage: StorageInterface):
 
-        self.presenter = presenter
         self.storage = storage
 
     def get_user_wrapper(self, user_ids: int, presenter: PresenterInterface):
