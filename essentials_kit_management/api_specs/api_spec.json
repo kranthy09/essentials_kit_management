@@ -308,34 +308,6 @@
         }
     },
     "responses": {
-        "UserloginResponse": {
-            "description": "user login",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "user_id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "access_token": {
-                        "type": "string"
-                    },
-                    "refresh_token": {
-                        "type": "string"
-                    },
-                    "expires_in": {
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                },
-                "required": [
-                    "user_id",
-                    "access_token",
-                    "refresh_token",
-                    "expires_in"
-                ]
-            }
-        },
         "GetListofFormsResponse": {
             "description": "This is response is ok",
             "schema": {
@@ -363,26 +335,6 @@
         }
     },
     "paths": {
-        "/signin/": {
-            "post": {
-                "operationId": "login_user",
-                "summary": "User Login",
-                "description": "Takes username and password and validates the user and servers accesstoken. This api is not idempotent.",
-                "security": [{
-                    "oauth": [
-                        "superuser"
-                    ]
-                }],
-                "parameters": [{
-                    "$ref": "#/parameters/UserLoginParameters"
-                }],
-                "responses": {
-                    "201": {
-                        "$ref": "#/responses/UserloginResponse"
-                    }
-                }
-            }
-        },
         "/listofforms/": {
             "get": {
                 "operationId": "get_list_of_forms",

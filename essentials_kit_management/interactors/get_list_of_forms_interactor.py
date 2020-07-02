@@ -6,15 +6,15 @@ from essentials_kit_management.interactors.storages.dtos \
             FormMetricsDto
         )
 from essentials_kit_management.interactors.storages \
-    .storage_list_of_forms_interface\
-        import StorageListOfFormsInterface
+    .storage_interface\
+        import StorageInterface
 from essentials_kit_management.interactors.presenters.presenter_interface\
     import PresenterInterface
 from typing import List, Dict
 
 
 class GetListOfFormsInteractor:
-    def __init__(self, storage: StorageListOfFormsInterface ,
+    def __init__(self, storage: StorageInterface,
                  presenter: PresenterInterface
                 ):
         self.storage = storage
@@ -96,6 +96,4 @@ class GetListOfFormsInteractor:
                     item_order_cost=item_order_cost
                 )
             )
-        print("*"*20)
-        print(f"item_metrics_dtos: {item_metrics_dtos}")
         return item_metrics_dtos
