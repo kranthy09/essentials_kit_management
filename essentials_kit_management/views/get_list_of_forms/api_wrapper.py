@@ -3,8 +3,8 @@ from django_swagger_utils.drf_server.utils.decorator.interface_decorator \
     import validate_decorator
 from .validator_class import ValidatorClass
 from essentials_kit_management.storages \
-    .storage_implementation \
-        import StorageImplementation 
+    .storage_get_list_of_forms_implementation \
+        import StorageListOfFormsImplementation 
 from essentials_kit_management.presenters \
     .presenter_implementation import PresenterImplementation
 from essentials_kit_management.interactors \
@@ -18,7 +18,7 @@ def api_wrapper(*args, **kwargs):
     query_params = kwargs['request_query_params']
     limit = query_params.limit
     offset = query_params.offset
-    storage = StorageImplementation()
+    storage = StorageListOfFormsImplementation()
     presenter = PresenterImplementation()
     interactor = GetListOfFormsInteractor(
                     storage=storage,
