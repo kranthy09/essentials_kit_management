@@ -7,8 +7,7 @@ class AuthService:
     def interface(self):
         from user_app.interfaces.service_interface \
             import ServiceInterface
-        service = ServiceInterface()
-        return service
+        return ServiceInterface()
 
     def get_user_tokens_dto(self, username, password):
         tokens_dto = self.interface.get_tokens_dto(

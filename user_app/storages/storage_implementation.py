@@ -36,7 +36,8 @@ class StorageImplementation(StorageInterface):
                 valid_user_ids.append(user_id)
         return valid_user_ids
 
-    def get_user_details(self, user_ids: List[int]):
+    def get_user_details(self, user_ids: int)-> \
+        List[UserDto]:
 
         users = List(UserInfo.objects.filter(id__in=user_ids))
         user_dtos = []

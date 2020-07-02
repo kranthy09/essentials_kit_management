@@ -1,8 +1,8 @@
-from userapp.exceptions.exceptions \
+from user_app.exceptions.exceptions \
     import InvalidUserId
-from userapp.interactors.storages.storage_interface \
+from user_app.interactors.storages.storage_interface \
     import StorageInterface
-from userapp.interactors.presenters.presenter_interface \
+from user_app.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import List
 
@@ -18,7 +18,7 @@ class GetUser:
         try:
             user_dtos = self.get_user(user_ids=user_ids)
         except InvalidUserId as err:
-            presenter.raise_exception_for_invalid_user(invalids=err)
+            presenter.raise_exception_for_invalid_user_id(invalids=err)
 
         response = presenter.get_user_response(user_dtos)
         return response

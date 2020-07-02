@@ -17,7 +17,7 @@ class PresenterInterface(ABC):
         pass
 
     @abstractmethod
-    def raise_exception_for_invalid_user(self):
+    def raise_exception_for_invalid_user_id(self):
         pass
 
     @abstractmethod

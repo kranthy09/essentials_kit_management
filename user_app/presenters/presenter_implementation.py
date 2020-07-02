@@ -3,7 +3,9 @@ from user_app.common.dtos \
 from user_app.interactors.storages.dtos \
     import UserDto
 from user_app.exceptions.exceptions \
-    import InvalidUsername, InvalidPassword
+    import (InvalidUsername,
+            InvalidPassword,
+            InvalidUserId)
 from user_app.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import List
@@ -17,8 +19,8 @@ class PresenterImplementation(PresenterInterface):
     def raise_invalid_username_and_password(self):
         raise InvalidPassword
 
-    def raise_exception_for_invalid_user(self):
-        pass
+    def raise_exception_for_invalid_user_id(self):
+        raise InvalidUserId
 
     def get_response_for_user_auth_token(self, user_auth_token_dto: UserAuthTokensDTO):
         response = {
