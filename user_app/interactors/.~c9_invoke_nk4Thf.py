@@ -33,6 +33,6 @@ class GetUser:
         valids = self.storage.get_valid_user_ids(user_ids=user_ids)
         invalids = [user_id for user_id in user_ids
                     if user_id not in valids]
-
+        p
         if invalids:
             raise InvalidUserId(invalids=invalids)

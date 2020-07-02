@@ -18,17 +18,6 @@ from typing import List, Dict
 class StorageInterface(ABC):
 
     @abstractmethod
-    def validate_username(self, username: int):
-        pass
-
-    @abstractmethod
-    def validate_username_and_password(self,
-                                       username: str,
-                                       password: str
-                                      ):
-        pass
-
-    @abstractmethod
     def get_list_of_form_dtos(self,
                               offset: int,
                               limit: int

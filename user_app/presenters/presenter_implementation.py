@@ -19,7 +19,7 @@ class PresenterImplementation(PresenterInterface):
     def raise_invalid_username_and_password(self):
         raise InvalidPassword
 
-    def raise_exception_for_invalid_user_id(self):
+    def raise_exception_for_invalid_user_id(self, invalids: List[int]):
         raise InvalidUserId
 
     def get_response_for_user_auth_token(self, user_auth_token_dto: UserAuthTokensDTO):

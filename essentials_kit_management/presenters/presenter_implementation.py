@@ -28,23 +28,6 @@ from essentials_kit_management.interactors.storages.dtos\
 
 class PresenterImplementation(PresenterInterface):
 
-    def raise_invalid_username(self):
-        raise InvalidUsername
-
-    def raise_invalid_username_and_password(self):
-        raise InvalidPassword
-
-    def get_response_for_user_auth_token(self,
-                                         user_tokens_dto: UserAuthTokensDTO
-                                        ):
-        response = {
-            "user_id": user_tokens_dto.user_id,
-            "access_token": user_tokens_dto.access_token,
-            "refresh_token": user_tokens_dto.refresh_token,
-            "expires_in": user_tokens_dto.expires_in
-        }
-        return response
-
     def get_response_for_list_of_forms(
                             self,
                             form_dtos: List[FormDto],

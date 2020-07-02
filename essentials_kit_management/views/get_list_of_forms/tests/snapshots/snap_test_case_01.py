@@ -11,15 +11,15 @@ snapshots['TestCase01GetListOfFormsAPITestCase::test_case status'] = 200
 
 snapshots['TestCase01GetListOfFormsAPITestCase::test_case body'] = [
     {
-        'closing_date': '2020-06-26',
-        'cost_incurred': 1674,
+        'closing_date': '2020-07-02',
+        'cost_incurred': 0,
         'form_id': 1,
-        'form_name': 'title0',
-        'form_state': 'DONE',
-        'next_delivery_date': '2020-06-26',
-        'pending_items': -2,
-        'total_cost_estimate': 2090,
-        'total_items': 25
+        'form_name': 'aDROJA',
+        'form_state': 'CLOSED',
+        'next_delivery_date': '2020-07-02',
+        'pending_items': 0,
+        'total_cost_estimate': 0,
+        'total_items': 0
     }
 ]
 
@@ -29,7 +29,7 @@ snapshots['TestCase01GetListOfFormsAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '219',
+        '213',
         'Content-Length'
     ],
     'content-type': [
@@ -48,13 +48,13 @@ snapshots['TestCase01GetListOfFormsAPITestCase::test_case header_params'] = {
 
 snapshots['TestCase01GetListOfFormsAPITestCase::test_case form_id'] = 1
 
-snapshots['TestCase01GetListOfFormsAPITestCase::test_case form_name'] = 'title0'
+snapshots['TestCase01GetListOfFormsAPITestCase::test_case form_name'] = 'aDROJA'
 
-snapshots['TestCase01GetListOfFormsAPITestCase::test_case form_state'] = 'DONE'
+snapshots['TestCase01GetListOfFormsAPITestCase::test_case form_state'] = 'CLOSED'
 
-snapshots['TestCase01GetListOfFormsAPITestCase::test_case closing_date'] = GenericRepr('datetime.datetime(2020, 6, 26, 16, 40, 16, 490151)')
+snapshots['TestCase01GetListOfFormsAPITestCase::test_case closing_date'] = GenericRepr('datetime.datetime(2020, 7, 2, 11, 22, 0, 936937)')
 
-snapshots['TestCase01GetListOfFormsAPITestCase::test_case next_delivery_date'] = GenericRepr('datetime.datetime(2020, 6, 26, 16, 40, 16, 490175)')
+snapshots['TestCase01GetListOfFormsAPITestCase::test_case next_delivery_date'] = GenericRepr('datetime.datetime(2020, 7, 2, 11, 22, 0, 936963)')
 
 snapshots['TestCase01GetListOfFormsAPITestCase::test_case total_items'] = 21
 

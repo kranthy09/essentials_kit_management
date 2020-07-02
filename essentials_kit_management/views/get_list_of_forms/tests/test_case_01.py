@@ -5,9 +5,9 @@ import json
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 from essentials_kit_management.models.models \
-    import Form
+    import Form, FormUser
 from essentials_kit_management.models.factories \
-    import (FormFactory, UserFactory,
+    import (FormFactory,
             SectionFactory, ItemFactory,
             BrandFactory, OrderedItemFactory)
 
@@ -38,7 +38,9 @@ class TestCase01GetListOfFormsAPITestCase(CustomAPITestCase):
                 username=username, password=password
             )
         user = self.foo_user
-        form = FormFactory(users=[user])
+        print("\n"*10)
+        print(user.id)
+        form = FormFactory()
         section_1 = SectionFactory(form=form)
         section_2 = SectionFactory(form=form)
         item_1 = ItemFactory(section=section_1)
@@ -47,11 +49,15 @@ class TestCase01GetListOfFormsAPITestCase(CustomAPITestCase):
         brand_2 = BrandFactory(item=item_1)
         brand_3 = BrandFactory(item=item_2)
         brand_4 = BrandFactory(item=item_2)
-        order_1 = OrderedItemFactory(user=self.foo_user)
-        order_2 = OrderedItemFactory(user=self.foo_user)
-        order_3 = OrderedItemFactory(user=self.foo_user)
+        order_1 = OrderedItemFactory(user_id=self.foo_user.id)
+        order_2 = OrderedItemFactory(user_id=self.foo_user.id)
+        order_3 = OrderedItemFactory(user_id=self.foo_user.id)
 
     def test_case(self):
+
+        print("\n"*10)
+        forms = FormUser.objects.filter(user_id=self.foo_user.id).select_related('form')
+        print(forms)
         response = self.default_test_case()
         response_obj = json.loads(response.content)
         form = response_obj[0]

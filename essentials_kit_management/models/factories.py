@@ -27,7 +27,7 @@ class SectionFactory(factory.django.DjangoModelFactory):
     description = factory.fuzzy.FuzzyText(length=10, chars=string.ascii_letters)
     form = factory.Iterator(Form.objects.all())
 
-class ItemFactory():
+class ItemFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Item

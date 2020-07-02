@@ -14,7 +14,8 @@ from essentials_kit_management.interactors.storages.dtos \
            ItemDetailsDto
          )
 from essentials_kit_management.models.models\
-    import Form, Section, Item, Brand, OrderedItem
+    import (Form, Section, Item, Brand,
+            OrderedItem, FormUser)
 from essentials_kit_management.interactors.storages\
     .storage_interface \
         import StorageInterface
@@ -24,27 +25,6 @@ from typing import List
 
 
 class StorageImplementation(StorageInterface):
-
-    def validate_username(self,
-                          username:str):
-        try:
-            User.objects.get(username=username)
-        except User.ObjectDoesnotExists:
-            raise InvalidUsername
-
-    def validate_username_and_password(self,
-                                       username: str,
-                                       password: str
-                                      ):
-        try:
-            user_id = User.objects.get(
-                            username=username,
-                            password=password
-                      )
-        except User.ObjectDoesnotExists:
-            raise InvalidPassword
-
-        return user_id
 
     def get_list_of_form_dtos(self,
                               offset: int, limit: int
@@ -67,8 +47,7 @@ class StorageImplementation(StorageInterface):
                      form_ids: List[int]
                     )-> List[UserItemDto]:
         user_item_dtos = []
-        user = User.objects.get(id=user_id)
-        forms = user.form_set.all()
+        forms = FormUser.objects.filter(user_id=user_id).select_related('form')
         for form in forms:
             sections = form.section_set.all()
             for section in sections:

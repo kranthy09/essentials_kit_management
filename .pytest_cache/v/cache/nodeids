@@ -28,5 +28,8 @@
   "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_duplicate_section_ids",
   "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items_for_invalid_section_ids",
   "essentials_kit_management/tests/interactors/test_get_section_items.py::test_get_section_items",
-  "user_app/tests/interactors/test_oauth_interactor.py::test_for_oauth_interactor"
+  "user_app/tests/interactors/test_oauth_interactor.py::test_for_oauth_interactor",
+  "user_app/tests/interactors/test_get_user_interactor.py::test_get_user_interactor_with_invalid_username",
+  "user_app/tests/interactors/test_get_user_interactor.py::test_get_user_interactor_with_invalid_user_id",
+  "user_app/tests/interactors/test_get_user_interactor.py::test_get_user_interactor"
 ]
