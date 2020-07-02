@@ -18,8 +18,7 @@ from django_swagger_utils.drf_server.utils.general.import_app_settings import \
 
 THIRD_PARTY_APPS = []
 APPS = [
-    "essentials_kit_management",
-    "user_app",
+    "essentials_kit_management"
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
@@ -62,8 +61,7 @@ SWAGGER_UTILS = {
         }
     },
     "APPS": {
-        "essentials_kit_management": {},
-        "user_app": {},
+        "essentials_kit_management": {}
     },
     "HOST": os.environ.get('APIGATEWAY_ENDPOINT', '127.0.0.1:8000'),
 }
@@ -75,5 +73,5 @@ CUSTOM_EXCEPTIONS_TO_LOG_IN_SENTRY = []
 
 # AbstractUser
 
-#AUTH_USER_MODEL = "user_app.UserInfo"
+AUTH_USER_MODEL = "essentials_kit_management.user"
 
