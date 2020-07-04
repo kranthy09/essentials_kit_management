@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/kranthi/Desktop/iB Training/projects/essentials_kit_management/essen/bin/python3" "$0" "$@"
+'''exec' "/home/kranthi/Desktop/iB Training/projects/essentials_kit_management/essen/bin/python3.8" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
