@@ -1,3 +1,5 @@
+import json
+from django.http import HttpResponse
 from user_app.common.dtos \
     import UserAuthTokensDTO
 from user_app.interactors.storages.dtos \
@@ -14,10 +16,32 @@ from typing import List
 class PresenterImplementation(PresenterInterface):
 
     def raise_invalid_username(self):
-        raise InvalidUsername
+        from user_app.exceptions.custom_exceptions \
+            import INVALID_USENAME_EXCEPTION
+        response = INVALID_USENAME_EXCEPTION[0]
+        status_code = 400
+        res_string = INVALID_USENAME_EXCEPTION[1]
+        data = {
+            "response": response,
+            "https_status_code": status_code,
+            "res_string": res_string
+        }
+        response_data = json.dumps(data)
+        return HttpResponse(response_data, status_code=400)
 
     def raise_invalid_username_and_password(self):
-        raise InvalidPassword
+        from user_app.exceptions.custom_exceptions \
+            import INVALID_PASSWORD_EXCEPTION
+        response = INVALID_PASSWORD_EXCEPTION[0]
+        status_code = 400
+        res_string = INVALID_PASSWORD_EXCEPTION[1]
+        data = {
+            "response": response,
+            "https_status_code": status_code,
+            "res_string": res_string
+        }
+        response_data = json.dumps(data)
+        return HttpResponse(response_data, status_code=400)
 
     def raise_exception_for_invalid_user_id(self, invalids: List[int]):
         raise InvalidUserId

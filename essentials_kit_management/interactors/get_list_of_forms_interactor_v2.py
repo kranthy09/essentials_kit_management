@@ -36,6 +36,8 @@ class GetListOfFormsInteractor:
                                    offset=offset)
         except InvalidOffSet:
             presenter.raise_exception_for_invalid_offset()
+        except InvalidLimit:
+            presenter.raise_exception_for_invalid_limit()
 
         response = presenter.get_response_for_form_details_dtos(form_details_dtos)
         return response
@@ -62,7 +64,7 @@ class GetListOfFormsInteractor:
         form_details_dtos = []
         for form_id in user_form_ids:
             user_selected_brand_dtos = \
-                self.storage.get_user_selected_brands(user_id=user_id)
+                self.storage.get_user_selected_brands(user_id=user_id, form_id=form_id)
             total_items = self._get_total_items(user_selected_brand_dtos)
             pending_items = self._get_pending_items(user_selected_brand_dtos)
             cost_estimate = self._get_cost_estimate(user_selected_brand_dtos)

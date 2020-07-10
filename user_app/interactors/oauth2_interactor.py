@@ -28,9 +28,9 @@ class OAuth2Interactor:
         try:
             tokens_dto = self.login(username=username, password=password)
         except InvalidUsername:
-            presenter.raise_invalid_username()
+            return presenter.raise_invalid_username()
         except InvalidPassword:
-            presenter.raise_invalid_username_and_password()
+            return presenter.raise_invalid_username_and_password()
 
         response = presenter.get_response_for_user_auth_token(
                         user_auth_token_dto=tokens_dto

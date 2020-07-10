@@ -1,7 +1,5 @@
 from essentials_kit_management.exceptions.exceptions\
-    import (InvalidUsername,
-            InvalidPassword,
-            UniqueItemException,
+    import (UniqueItemException,
             UniqueSectionException,
             InvalidSectionId,
             InvalidItem,
@@ -200,6 +198,38 @@ class PresenterImplementation(PresenterInterface):
 
     def raise_exception_for_invalid_form_id(self):
         raise InvalidForm
+
+    def raise_exception_for_invalid_offset(self):
+        import json
+        from django.http import HttpResponse
+        from essentials_kit_management.exceptions.custom_exceptions \
+            import INVALID_OFFSET_EXCEPTION
+        response = INVALID_OFFSET_EXCEPTION[0]
+        status_code = 400
+        res_status = INVALID_OFFSET_EXCEPTION[1]
+        data = {
+            "response": response,
+            "status_code": status_code,
+            "res_status": res_status
+        }
+        response_data = json.loads(data)
+        return HttpResponse(response_data, status_code=400)
+
+    def raise_exception_for_invalid_limit(self):
+        import json
+        from django.http import HttpResponse
+        from essentials_kit_management.exceptions.custom_exceptions \
+            import INVALID_LIMIT_EXCEPTION
+        response = INVALID_LIMIT_EXCEPTION[0]
+        status_code = 400
+        res_status = INVALID_LIMIT_EXCEPTION[1]
+        data = {
+            "response": response,
+            "status_code": status_code,
+            "res_status": res_status
+        }
+        response_data = json.loads(data)
+        return HttpResponse(response_data, status_code=400)
 
     def get_form_response(self, form_complete_details_dto: FormCompleteDetailsDto):
 

@@ -97,6 +97,6 @@ class StorageInterface(ABC):
         pass
 
     @abstractmethod
-    def get_user_selected_brands(self, user_id: int)-> \
+    def get_user_selected_brands(self, user_id: int, form_id: int)-> \
         List[UserSelectedBrandsDto]:
         pass

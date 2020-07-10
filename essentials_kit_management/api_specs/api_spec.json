@@ -340,8 +340,7 @@
                     },
                     "type": "string",
                     "enum": [
-                        "INVALID_USERNAME",
-                        "INVALID_FORM_ID"
+                        "INVALID_OFFSET"
                     ]
                 }
             }
