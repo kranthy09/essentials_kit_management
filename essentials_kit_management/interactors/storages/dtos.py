@@ -173,3 +173,14 @@ class FormCompleteDetailsDto:
     item_details: List[ItemDetailsDto]
     item_brands: List[ItemBrandDto]
     brands_details: List[BrandDetailsDto]
+
+
+# -------------------- get_list_of_forms_v2-----------------------
+
+@dataclass
+class UserSelectedBrandsDto:
+    brand_id: int
+    quantity: int
+    cost_per_item: int
+    delivered_items: int
+    is_closed: bool

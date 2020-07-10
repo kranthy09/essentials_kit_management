@@ -14,39 +14,6 @@ class Form(models.Model):
     closed_date = models.DateTimeField()
     expected_delivery_date = models.DateTimeField()
 
-class Section(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=200)
-    form = models.ForeignKey(Form, on_delete=models.CASCADE)
-
-class Item(models.Model):
-    name = models.CharField(max_length=100)
-    item_description = models.CharField(max_length=200)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-
-class Brand(models.Model):
-    name = models.CharField(max_length=100)
-    min_quantity = models.IntegerField(default=0)
-    max_quantity = models.IntegerField(default=0)
-    price_per_item = models.IntegerField()
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-
-class OrderedItem(models.Model):
-    user_id = models.IntegerField()
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    is_closed = models.BooleanField(default=False)
-    delivered_items = models.IntegerField(default=0)
-    quantity = models.IntegerField()
-
-class SectionItem(models.Model):
-    form = models.ForeignKey(Form, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    estimated_cost = models.IntegerField(default=0)
-    quantity_selected = models.IntegerField(default=0)
-    brand_selected = models.OneToOneField(Brand, on_delete=models.CASCADE)
-
 class FormUser(models.Model):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     user_id = models.IntegerField()
@@ -54,3 +21,40 @@ class FormUser(models.Model):
     pending_items = models.IntegerField(default=0)
     cost_incurred = models.IntegerField(default=0)
     total_cost_estimate = models.IntegerField(default=0)
+
+class Section(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+
+class FormSection(models.Model):
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    item_description = models.CharField(max_length=200)
+
+class SectionItem(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+
+class Brand(models.Model):
+    name = models.CharField(max_length=100)
+    min_quantity = models.IntegerField(default=0)
+    max_quantity = models.IntegerField(default=0)
+    price_per_item = models.IntegerField()
+
+class ItemBrand(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    Brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+class Order(models.Model):
+    user_id = models.IntegerField()
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    order_cost = models.IntegerField()
+    delivered_items = models.IntegerField(default=0)
+    is_closed = models.BooleanField(default=False)

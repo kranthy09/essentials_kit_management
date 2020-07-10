@@ -7,9 +7,6 @@ from essentials_kit_management.storages.storage_implementation\
     import StorageImplementation
 from essentials_kit_management.presenters.presenter_implementation\
     import PresenterImplementation
-from essentials_kit_management.interactors\
-    .oauth2_interactor\
-        import OAuth2Interactor
 from essentials_kit_management.adapters.service_adapter \
     import get_service_adapter
 from common.oauth2_storage import OAuth2SQLStorage

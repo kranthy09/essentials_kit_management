@@ -10,7 +10,9 @@ from essentials_kit_management.interactors.storages \
                   ItemBrandsDto,
                   BrandDetailsDto,
                   SectionItemsDto,
-                  ItemDetailsDto
+                  ItemDetailsDto,
+                  FormDetailsDto,
+                  UserSelectedBrandsDto
           )
 from typing import List, Dict
 
@@ -77,4 +79,24 @@ class StorageInterface(ABC):
     @abstractmethod
     def get_forms_sections_dtos(self, form_id: int)-> \
         List[FormSectionDto]:
+        pass
+
+    @abstractmethod
+    def get_all_form_ids(self)-> \
+        List[int]:
+        pass
+
+    @abstractmethod
+    def get_user_form_ids(self, user_id: int)-> \
+        List[int]:
+        pass
+
+    @abstractmethod
+    def get_non_user_form_dtos(self, form_ids: List[int])-> \
+        List[FormDetailsDto]:
+        pass
+
+    @abstractmethod
+    def get_user_selected_brands(self, user_id: int)-> \
+        List[UserSelectedBrandsDto]:
         pass

@@ -327,6 +327,25 @@
                 ]
             }
         },
+        "GetListofFormsFailureResponse": {
+            "description": "Get list of forms failure response",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "response": {
+                        "type": "string"
+                    },
+                    "https_status_code": {
+                        "type": "string"
+                    },
+                    "type": "string",
+                    "enum": [
+                        "INVALID_USERNAME",
+                        "INVALID_FORM_ID"
+                    ]
+                }
+            }
+        },
         "GetSingleFormResponse": {
             "description": "Get a form with response ok",
             "schema": {
@@ -363,6 +382,9 @@
                 "responses": {
                     "201": {
                         "$ref": "#/responses/GetListofFormsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/GetListofFormsFailureResponse"
                     }
                 }
             }

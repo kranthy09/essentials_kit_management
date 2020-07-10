@@ -9,12 +9,17 @@ from essentials_kit_management.interactors.storages\
                   FormDtoToPresenter,
                   ItemDetailsWithBrandsDto,
                   SectionCompleteDetailsDto,
-                  FormCompleteDetailsDto
+                  FormCompleteDetailsDto,
+                  FormDetailsDto
           )
 from typing import Dict, List
 
 
 class PresenterInterface(ABC):
+
+    @abstractmethod
+    def raise_exception_for_invalid_offset(self):
+        pass
 
     @abstractmethod
     def get_response_for_list_of_forms(
@@ -57,4 +62,9 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def get_form_response(self, form_complete_details_dto: FormCompleteDetailsDto):
+        pass
+
+    @abstractmethod
+    def get_response_for_form_details_dtos(self,
+        form_details_dtos: List[FormDetailsDto]):
         pass

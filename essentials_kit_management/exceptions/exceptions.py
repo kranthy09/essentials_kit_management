@@ -1,8 +1,9 @@
-class InvalidUsername(Exception):
+class InvalidOffSet(Exception):
     pass
 
-class InvalidPassword(Exception):
+class InvalidLimit(Exception):
     pass
+
 
 class OrderedItemDoesNotExist(Exception):
     pass
